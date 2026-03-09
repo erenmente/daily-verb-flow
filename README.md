@@ -1,113 +1,123 @@
 # Daily Verb Flow 🚀
 
-Daily Verb Flow is an automated, serverless web application designed to help users improve their English vocabulary effortlessly. It assesses the user's English level through an adaptive placement test and sends daily, personalized email campaigns containing 10 new English verbs (V1, V2, V3) along with example sentences—delivered every morning at 08:00 AM (Turkey Time).
+Daily Verb Flow, kullanıcıların İngilizce kelime dağarcığını geliştirmelerine yardımcı olmak için tasarlanmış otomatik ve sunucusuz (serverless) bir web uygulamasıdır. Seviye tespit sınavı ile kullanıcının İngilizce seviyesini belirler ve haftanın her günü (Türkiye saati ile 08:00'de) kullanıcının e-posta adresine 10 yeni İngilizce fiil (V1, V2, V3 formları) ve örnek cümleler içeren kişiselleştirilmiş mail kampanyaları gönderir.
 
 ![Daily Verb Flow](public/images/favicon.svg)
 
-## 🌟 Features
+## 🌟 Özellikler
 
-- **Modern & Responsive UI**: Glassmorphism design aesthetics for an engaging user experience.
-- **Adaptive Placement Test**: A dynamic 15-question test that adjusts difficulty based on user answers to accurately determine their CEFR level (A1 to C1).
-- **Automated Daily Emails**: Scheduled cron jobs run every morning to deliver customized vocabulary lists straight to the user's inbox.
-- **AI-Powered Content**: Leverages Google Gemini 2.0 Flash to dynamically generate rich example sentences for verbs when seed data runs low, ensuring endless content without manual intervention.
-- **Smart Caching Mechanism**: All AI-generated content is cached in the database for future use, drastically reducing API costs and improving performance.
-- **Robust Error Handling & Batch Processing**: Designed to handle serverless timeouts by processing email campaigns in batches.
+- **Modern & Responsive Tasarım**: Etkileyici bir kullanıcı deneyimi için Glassmorphism (cam efekti) estetiği.
+- **Adaptif Seviye Testi**: Kullanıcının CEFR seviyesini (A1'den C1'e) doğru bir şekilde belirleyebilmek için, verilen cevaplara göre zorluğu değişen 15 soruluk dinamik bir sınav.
+- **Otomatik Günlük E-postalar**: Her sabah kullanıcıların e-posta kutusuna özelleştirilmiş kelime listeleri göndermek için çalışan zamanlanmış görevler (Cron job).
+- **Yapay Zeka Destekli İçerik**: Veritabanındaki kelime stoğu azaldığında, manuel müdahaleye gerek kalmadan Google Gemini 2.0 Flash kullanarak fiiller için yepyeni örnek cümleler üreten akıllı sistem.
+- **Akıllı Önbellekleme (Caching)**: Yapay zeka ile üretilen tüm içerikler gelecekteki kullanımlar için veritabanında önbelleğe alınır, bu sayede API maliyetleri büyük ölçüde düşürülür ve performans artar.
+- **Güçlü Hata Yönetimi & Toplu İşlem (Batch Processing)**: Sunucusuz mimarinin zaman aşımı (timeout) limitlerini aşabilmek için e-posta gönderimlerini gruplar halinde (batch) işleyecek şekilde tasarlanmıştır.
 
-## 🛠️ Technology Stack
+## 🛠️ Teknoloji Yığını
 
-- **Frontend**: HTML5, Vanilla JavaScript, CSS3 (No heavy frameworks, raw performance)
-- **Backend**: Node.js, Express.js (Wrapped in `serverless-http` for Netlify)
-- **Database**: Firebase Firestore (NoSQL for user profiles, vocabulary list, and email logs)
-- **Email Delivery**: SendGrid API
-- **AI Engine**: Google Gemini API (`@google/generative-ai`)
-- **Hosting & Scheduling**: Netlify Functions (Serverless & Scheduled Functions)
-- **Version Control**: Git & GitHub
+- **Frontend**: HTML5, Vanilla JavaScript, CSS3 (Ağır framework'ler yok, saf performans)
+- **Backend**: Node.js, Express.js (Netlify için `serverless-http` ile sarmalanmıştır)
+- **Veritabanı**: Firebase Firestore (Kullanıcı profilleri, kelime listeleri ve e-posta logları için NoSQL)
+- **E-posta Dağıtımı**: SendGrid API
+- **Yapay Zeka Motoru**: Google Gemini API (`@google/generative-ai`)
+- **Barındırma & Zamanlama**: Netlify Functions (Serverless & Scheduled Functions)
+- **Versiyon Kontrolü**: Git & GitHub
 
-## 📂 Project Structure
+## 📂 Proje Yapısı
 
 ```text
-├── netlify/               # Netlify configuration and Serverless Functions
+├── netlify/               # Netlify konfigürasyonu ve Sunucusuz (Serverless) Fonksiyonlar
 │   └── functions/
-│       ├── api.js         # Backend API routes (Registration, Test Handling, Unsubscribe)
-│       └── daily-email.js # Scheduled Cron Job for daily email dispatch
-├── public/                # Frontend static assets
-│   ├── css/               # Stylesheets (style.css, test.css)
-│   ├── js/                # Client-side scripts (app.js, test.js)
-│   ├── index.html         # Landing/Registration Page
-│   └── test.html          # Adaptive Placement Test Page
-├── seeds/                 # Database seed scripts for initial vocabulary
-├── package.json           # Dependencies and NPM scripts
-├── netlify.toml           # Netlify Build and Routing Configuration
-└── server.js              # Local Express development server
+│       ├── api.js         # Backend API rotaları (Kayıt, Sınav Sonucu İşleme, Abonelik İptali)
+│       └── daily-email.js # Günlük e-posta gönderiminden sorumlu zamanlanmış (Cron) fonksiyon
+├── public/                # Frontend statik dosyaları
+│   ├── css/               # Stil dosyaları (style.css, test.css)
+│   ├── js/                # İstemci taraflı scriptler (app.js, test.js)
+│   ├── index.html         # Karşılama/Kayıt Sayfası
+│   └── test.html          # Adaptif Seviye Belirleme Sınavı Sayfası
+├── seeds/                 # Başlangıç kelime veritabanı için yükleme scriptleri (Seed data)
+├── package.json           # Bağımlılıklar (Dependencies) ve NPM komutları
+├── netlify.toml           # Netlify Derleme (Build) ve Yönlendirme Konfigürasyonu
+└── server.js              # Yerel (Local) Express geliştirme sunucusu
 ```
 
-## 🚀 Local Development Setup
+## 🚀 Yerel Geliştirme (Local Development) Ortamı
 
-Follow these steps to run the project locally.
+Projeyi kendi bilgisayarınızda çalıştırmak için bu adımları izleyin.
 
-### Prerequisites
-- Node.js (v18 or higher recommended)
-- A Firebase Project (with Firestore enabled)
-- A SendGrid Account (with a verified sender identity)
-- A Google Gemini API Key
+### Gereksinimler
 
-### 1. Clone the repository
+- Node.js (v18 veya daha güncel bir sürüm önerilir)
+- Bir Firebase Projesi (Firestore etkinleştirilmiş şekilde)
+- Bir SendGrid Hesabı (Doğrulanmış bir gönderici kimliği ile birlikte)
+- Bir Google Gemini API Anahtarı (Key)
+
+### 1. Repoyu bilgisayarınıza klonlayın
+
 ```bash
 git clone https://github.com/erenmente/daily-verb-flow.git
 cd daily-verb-flow
 ```
 
-### 2. Install dependencies
+### 2. Bağımlılıkları yükleyin
+
 ```bash
 npm install
 ```
 
-### 3. Setup Environment Variables
-Create a `.env` file in the root directory and add your credentials:
-```env
-# Firebase Setup
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_CLIENT_EMAIL=your_client_email
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour_Key\n-----END PRIVATE KEY-----\n"
+### 3. Çevre Değişkenlerini (Environment Variables) Ayarlayın
 
-# SendGrid Setup
-SENDGRID_API_KEY=SG.your_api_key
-SENDGRID_FROM_EMAIL=your_verified_sender@domain.com
+Ana dizinde bir `.env` dosyası oluşturun ve bilgilerinizi ekleyin:
+
+```env
+# Firebase Kurulumu
+FIREBASE_PROJECT_ID=kendi_proje_id_niz
+FIREBASE_CLIENT_EMAIL=kendi_client_email_adresiniz
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nKendi_Gizli_Anahtariniz\n-----END PRIVATE KEY-----\n"
+
+# SendGrid Kurulumu
+SENDGRID_API_KEY=SG.kendi_api_anahtariniz
+SENDGRID_FROM_EMAIL=dogrulanmis_mailiniz@domain.com
 SENDGRID_FROM_NAME=Daily Verb Flow
 
-# Google Gemini Setup
-GEMINI_API_KEY=your_gemini_api_key
+# Google Gemini Kurulumu
+GEMINI_API_KEY=kendi_gemini_api_anahtariniz
 
-# Local Server Setup
+# Yerel Sunucu Ayarları
 PORT=3000
 BASE_URL=http://localhost:3000
 ```
 
-### 4. Seed the Database
-Populate your Firestore with the initial batch of verbs (A1-C1). Run:
+### 4. Veritabanına Başlangıç Verilerini Yükleyin (Seed)
+
+A1'den C1'e kadar olan ilk fiil havuzunu Firestore'a aktarmak için şunu çalıştırın:
+
 ```bash
 npm run seed-all
 ```
 
-### 5. Start the Development Server
+### 5. Geliştirme Sunucusunu Başlatın
+
 ```bash
 npm start
 ```
-The application will be available at `http://localhost:3000`.
 
-## ☁️ Deployment (Netlify)
+Uygulama artık `http://localhost:3000` adresinde yayında olacaktır.
 
-This project is optimized for a zero-config deployment on Netlify.
+## ☁️ Yayına Alma (Deploy - Netlify)
 
-1. Connect your GitHub repository to Netlify.
-2. Netlify will automatically detect the `netlify.toml` configuration.
-3. Add all the environment variables from your `.env` file into **Netlify's Environment Variables** settings (Site Settings > Environment Variables).
-4. Click **Deploy**.
+Bu proje, Netlify üzerinde hiçbir ek konfigürasyon (zero-config) gerektirmeden çalışmak üzere optimize edilmiştir.
 
-The scheduled function (`daily-email.js`) relies on Netlify's Scheduled Functions feature and will automatically trigger at `0 "5" * * *` (05:00 UTC / 08:00 TRT) based on the `netlify.toml` file.
+1. GitHub deponuzu Netlify'a bağlayın.
+2. Netlify, `netlify.toml` dosyasındaki ayarları otomatik olarak tanıyacaktır.
+3. `.env` dosyanızdaki tüm çevre değişkenlerini **Netlify Environment Variables** (Site Ayarları > Ortam Değişkenleri) sayfasına ekleyin.
+4. **Deploy** butonuna tıklayın.
 
-## 📝 License
-This project is created by Eren Mente.
+Zamanlanmış fonksiyon (`daily-email.js`), Netlify'ın "Scheduled Functions" özelliğini kullanır ve `netlify.toml` dosyasındaki `0 "5" * * *` kuralına (05:00 UTC / 08:00 TRT) göre her sabah otomatik olarak tetiklenir.
+
+## 📝 Lisans
+
+Bu proje Eren Mente tarafından geliştirilmiştir.
 
 ---
-*Live Demo: [https://daily-verb-flow.netlify.app/](https://daily-verb-flow.netlify.app/)*
+*Canlı Demo: [https://daily-verb-flow.netlify.app/](https://daily-verb-flow.netlify.app/)*
