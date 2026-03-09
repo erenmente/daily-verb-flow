@@ -2,8 +2,6 @@
 
 Daily Verb Flow, kullanıcıların İngilizce kelime dağarcığını geliştirmelerine yardımcı olmak için tasarlanmış otomatik ve sunucusuz (serverless) bir web uygulamasıdır. Seviye tespit sınavı ile kullanıcının İngilizce seviyesini belirler ve haftanın her günü (Türkiye saati ile 08:00'de) kullanıcının e-posta adresine 10 yeni İngilizce fiil (V1, V2, V3 formları) ve örnek cümleler içeren kişiselleştirilmiş mail kampanyaları gönderir.
 
-![Daily Verb Flow](./public/images/logo.png)
-
 ## 🌟 Özellikler
 
 - **Modern & Responsive Tasarım**: Etkileyici bir kullanıcı deneyimi için Glassmorphism (cam efekti) estetiği.
