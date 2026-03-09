@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Daily Verb Flow - Her gün 10 yeni İngilizce fiil öğrenin. Seviyenize uygun fiil çekimleri ve örnek cümleler e-postanıza gelsin.">
+  <title>Daily Verb Flow | Günlük Fiil Akışı</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <!-- Animated background particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <main class="landing">
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+      <div class="nav__logo">
+        <span class="nav__logo-icon">📚</span>
+        <span class="nav__logo-text">Daily Verb Flow</span>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero__badge">
+        <span class="hero__badge-dot"></span>
+        Ücretsiz Günlük İngilizce
+      </div>
+      <h1 class="hero__title">
+        İngilizce Fiilleri
+        <span class="hero__title-gradient">Her Gün Öğren</span>
+      </h1>
+      <p class="hero__subtitle">
+        Seviyenize uygun <strong>V1 – V2 – V3</strong> fiil çekimlerini, anlamlarını ve
+        örnek cümleleri her sabah e-postanızda bulun. <em>Tamamen ücretsiz.</em>
+      </p>
+
+      <!-- Features -->
+      <div class="features">
+        <div class="feature">
+          <div class="feature__icon">🎯</div>
+          <div class="feature__text">Seviyene Uygun</div>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">📬</div>
+          <div class="feature__text">Her Sabah 10 Fiil</div>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">🌍</div>
+          <div class="feature__text">EN + TR Cümleler</div>
+        </div>
+      </div>
+
+      <!-- Registration Card -->
+      <div class="card" id="register-card">
+        <div class="card__header">
+          <h2 class="card__title">Hemen Başla</h2>
+          <p class="card__desc">Kayıt ol, seviye testini çöz, yarın sabah ilk fiillerin gelsin!</p>
+        </div>
+
+        <form class="form" id="register-form">
+          <div class="form__group">
+            <label class="form__label" for="name">Adınız</label>
+            <div class="form__input-wrapper">
+              <span class="form__input-icon">👤</span>
+              <input type="text" id="name" name="name" class="form__input" placeholder="Adınızı girin" required
+                autocomplete="given-name">
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="email">E-posta Adresiniz</label>
+            <div class="form__input-wrapper">
+              <span class="form__input-icon">✉️</span>
+              <input type="email" id="email" name="email" class="form__input" placeholder="ornek@email.com" required
+                autocomplete="email">
+            </div>
+          </div>
+
+          <button type="submit" class="form__btn" id="submit-btn">
+            <span class="form__btn-text">Kayıt Ol & Teste Başla</span>
+            <span class="form__btn-icon">→</span>
+          </button>
+
+          <p class="form__note">
+            🔒 Bilgileriniz güvende. İstediğiniz zaman çıkabilirsiniz.
+          </p>
+        </form>
+
+        <!-- Success State -->
+        <div class="card__success hidden" id="success-state">
+          <div class="card__success-icon">✅</div>
+          <h3>Kayıt Başarılı!</h3>
+          <p>Seviye testine yönlendiriliyorsunuz...</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- Social Proof -->
+      <div class="social-proof">
+        <div class="social-proof__avatars">
+          <div class="avatar avatar--1">M</div>
+          <div class="avatar avatar--2">A</div>
+          <div class="avatar avatar--3">K</div>
+          <div class="avatar avatar--4">E</div>
+        </div>
+        <p class="social-proof__text">
+          <strong>500+</strong> kişi fiil öğrenmeye başladı
+        </p>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="steps">
+      <h2 class="steps__title">Nasıl Çalışır?</h2>
+      <div class="steps__grid">
+        <div class="step">
+          <div class="step__number">1</div>
+          <div class="step__icon">✍️</div>
+          <h3 class="step__title">Kayıt Ol</h3>
+          <p class="step__desc">Adını ve e-postanı yaz. 30 saniye sürer.</p>
+        </div>
+        <div class="step">
+          <div class="step__number">2</div>
+          <div class="step__icon">📝</div>
+          <h3 class="step__title">Testini Çöz</h3>
+          <p class="step__desc">15 soruluk seviye testini tamamla. A1'den C1'e kadar seviyen belirlenir.</p>
+        </div>
+        <div class="step">
+          <div class="step__number">3</div>
+          <div class="step__icon">📧</div>
+          <h3 class="step__title">Fiilleri Öğren</h3>
+          <p class="step__desc">Her sabah 10 yeni fiil, V1-V2-V3 çekimleri ve örnek cümlelerle e-postanda.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 Daily Verb Flow — İngilizce öğrenmenin en kolay yolu.</p>
+    </footer>
+  </main>
+
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

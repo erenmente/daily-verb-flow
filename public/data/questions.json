@@ -1,0 +1,602 @@
+[
+    {
+        "id": 1,
+        "question": "I ___ to school every day.",
+        "options": [
+            "go",
+            "goes",
+            "going",
+            "went"
+        ],
+        "correctAnswer": 0,
+        "level": "A1"
+    },
+    {
+        "id": 2,
+        "question": "She ___ a beautiful song yesterday.",
+        "options": [
+            "sing",
+            "sang",
+            "sung",
+            "sings"
+        ],
+        "correctAnswer": 1,
+        "level": "A1"
+    },
+    {
+        "id": 3,
+        "question": "They ___ dinner at 7 PM every evening.",
+        "options": [
+            "has",
+            "having",
+            "have",
+            "had"
+        ],
+        "correctAnswer": 2,
+        "level": "A1"
+    },
+    {
+        "id": 4,
+        "question": "He ___ his homework last night.",
+        "options": [
+            "do",
+            "does",
+            "did",
+            "done"
+        ],
+        "correctAnswer": 2,
+        "level": "A1"
+    },
+    {
+        "id": 5,
+        "question": "I ___ a glass of milk every morning.",
+        "options": [
+            "drinks",
+            "drank",
+            "drunk",
+            "drink"
+        ],
+        "correctAnswer": 3,
+        "level": "A1"
+    },
+    {
+        "id": 6,
+        "question": "We ___ two cats and a dog.",
+        "options": [
+            "has",
+            "have",
+            "having",
+            "had"
+        ],
+        "correctAnswer": 1,
+        "level": "A1"
+    },
+    {
+        "id": 7,
+        "question": "She ___ a letter to her friend last week.",
+        "options": [
+            "writes",
+            "write",
+            "wrote",
+            "written"
+        ],
+        "correctAnswer": 2,
+        "level": "A1"
+    },
+    {
+        "id": 8,
+        "question": "I can ___ the mountains from here.",
+        "options": [
+            "seeing",
+            "saw",
+            "seen",
+            "see"
+        ],
+        "correctAnswer": 3,
+        "level": "A1"
+    },
+    {
+        "id": 9,
+        "question": "My mother ___ delicious food every Sunday.",
+        "options": [
+            "make",
+            "makes",
+            "made",
+            "making"
+        ],
+        "correctAnswer": 1,
+        "level": "A1"
+    },
+    {
+        "id": 10,
+        "question": "They ___ to the park yesterday.",
+        "options": [
+            "come",
+            "comes",
+            "came",
+            "coming"
+        ],
+        "correctAnswer": 2,
+        "level": "A1"
+    },
+    {
+        "id": 11,
+        "question": "She has never ___ to London.",
+        "options": [
+            "be",
+            "been",
+            "being",
+            "was"
+        ],
+        "correctAnswer": 1,
+        "level": "A2"
+    },
+    {
+        "id": 12,
+        "question": "I ___ English for three years.",
+        "options": [
+            "learn",
+            "learned",
+            "have been learning",
+            "learns"
+        ],
+        "correctAnswer": 2,
+        "level": "A2"
+    },
+    {
+        "id": 13,
+        "question": "He ___ me how to ride a bicycle when I was six.",
+        "options": [
+            "teached",
+            "taught",
+            "teach",
+            "teaching"
+        ],
+        "correctAnswer": 1,
+        "level": "A2"
+    },
+    {
+        "id": 14,
+        "question": "We ___ a new car last month.",
+        "options": [
+            "buy",
+            "buyed",
+            "bought",
+            "buying"
+        ],
+        "correctAnswer": 2,
+        "level": "A2"
+    },
+    {
+        "id": 15,
+        "question": "I have already ___ my homework.",
+        "options": [
+            "do",
+            "did",
+            "doing",
+            "done"
+        ],
+        "correctAnswer": 3,
+        "level": "A2"
+    },
+    {
+        "id": 16,
+        "question": "She ___ us everything about the trip.",
+        "options": [
+            "tell",
+            "telling",
+            "told",
+            "telled"
+        ],
+        "correctAnswer": 2,
+        "level": "A2"
+    },
+    {
+        "id": 17,
+        "question": "They ___ the house at 8 AM every day.",
+        "options": [
+            "leave",
+            "left",
+            "leaved",
+            "leaving"
+        ],
+        "correctAnswer": 0,
+        "level": "A2"
+    },
+    {
+        "id": 18,
+        "question": "Have you ___ to your teacher about it?",
+        "options": [
+            "speak",
+            "spoke",
+            "spoken",
+            "speaking"
+        ],
+        "correctAnswer": 2,
+        "level": "A2"
+    },
+    {
+        "id": 19,
+        "question": "I ___ about the problem for hours.",
+        "options": [
+            "think",
+            "thought",
+            "thinked",
+            "thinking"
+        ],
+        "correctAnswer": 1,
+        "level": "A2"
+    },
+    {
+        "id": 20,
+        "question": "She has ___ 5 kilometers this morning.",
+        "options": [
+            "run",
+            "ran",
+            "running",
+            "runned"
+        ],
+        "correctAnswer": 0,
+        "level": "A2"
+    },
+    {
+        "id": 21,
+        "question": "The company ___ significantly over the last decade.",
+        "options": [
+            "has grown",
+            "has grew",
+            "have grown",
+            "growed"
+        ],
+        "correctAnswer": 0,
+        "level": "B1"
+    },
+    {
+        "id": 22,
+        "question": "By the time we arrived, the movie had already ___.",
+        "options": [
+            "begin",
+            "began",
+            "begun",
+            "beginning"
+        ],
+        "correctAnswer": 2,
+        "level": "B1"
+    },
+    {
+        "id": 23,
+        "question": "She ___ her arm while playing basketball.",
+        "options": [
+            "break",
+            "broked",
+            "broken",
+            "broke"
+        ],
+        "correctAnswer": 3,
+        "level": "B1"
+    },
+    {
+        "id": 24,
+        "question": "They have ___ the red one instead of the blue.",
+        "options": [
+            "choose",
+            "chose",
+            "chosen",
+            "choosing"
+        ],
+        "correctAnswer": 2,
+        "level": "B1"
+    },
+    {
+        "id": 25,
+        "question": "He ___ all his savings on a trip to Europe.",
+        "options": [
+            "spend",
+            "spent",
+            "spended",
+            "spending"
+        ],
+        "correctAnswer": 1,
+        "level": "B1"
+    },
+    {
+        "id": 26,
+        "question": "If I ___ you, I would take the job offer.",
+        "options": [
+            "am",
+            "was",
+            "were",
+            "be"
+        ],
+        "correctAnswer": 2,
+        "level": "B1"
+    },
+    {
+        "id": 27,
+        "question": "The leaves have ___ from the trees already.",
+        "options": [
+            "fall",
+            "fell",
+            "fallen",
+            "falling"
+        ],
+        "correctAnswer": 2,
+        "level": "B1"
+    },
+    {
+        "id": 28,
+        "question": "She has ___ a formal dress to every event this year.",
+        "options": [
+            "wear",
+            "wore",
+            "worn",
+            "wearing"
+        ],
+        "correctAnswer": 2,
+        "level": "B1"
+    },
+    {
+        "id": 29,
+        "question": "The sun ___ at 6:30 AM this morning.",
+        "options": [
+            "rise",
+            "rose",
+            "risen",
+            "rising"
+        ],
+        "correctAnswer": 1,
+        "level": "B1"
+    },
+    {
+        "id": 30,
+        "question": "She has ___ the team for over five years.",
+        "options": [
+            "lead",
+            "led",
+            "leaded",
+            "leading"
+        ],
+        "correctAnswer": 1,
+        "level": "B1"
+    },
+    {
+        "id": 31,
+        "question": "The suspect ___ from the investigation before charges were filed.",
+        "options": [
+            "withdraw",
+            "withdrew",
+            "has withdrawn",
+            "withdrawing"
+        ],
+        "correctAnswer": 1,
+        "level": "B2"
+    },
+    {
+        "id": 32,
+        "question": "She ___ her childhood trauma through years of therapy.",
+        "options": [
+            "overcome",
+            "overcame",
+            "overcomed",
+            "overcoming"
+        ],
+        "correctAnswer": 1,
+        "level": "B2"
+    },
+    {
+        "id": 33,
+        "question": "The use of mobile phones is strictly ___ in the examination hall.",
+        "options": [
+            "forbid",
+            "forbade",
+            "forbidden",
+            "forbidding"
+        ],
+        "correctAnswer": 2,
+        "level": "B2"
+    },
+    {
+        "id": 34,
+        "question": "Several complications ___ during the surgical procedure.",
+        "options": [
+            "rise",
+            "arose",
+            "arised",
+            "arising"
+        ],
+        "correctAnswer": 1,
+        "level": "B2"
+    },
+    {
+        "id": 35,
+        "question": "The company has ___ a comprehensive review of its policies.",
+        "options": [
+            "undertake",
+            "undertook",
+            "undertaken",
+            "undertaking"
+        ],
+        "correctAnswer": 2,
+        "level": "B2"
+    },
+    {
+        "id": 36,
+        "question": "Researchers have ___ to find a cure for the disease.",
+        "options": [
+            "seek",
+            "sought",
+            "seeked",
+            "seeking"
+        ],
+        "correctAnswer": 1,
+        "level": "B2"
+    },
+    {
+        "id": 37,
+        "question": "The contract ___ both parties to its terms and conditions.",
+        "options": [
+            "bind",
+            "bound",
+            "binds",
+            "binding"
+        ],
+        "correctAnswer": 2,
+        "level": "B2"
+    },
+    {
+        "id": 38,
+        "question": "The patient ___ a complex surgical operation last week.",
+        "options": [
+            "undergo",
+            "underwent",
+            "undergone",
+            "undergoing"
+        ],
+        "correctAnswer": 1,
+        "level": "B2"
+    },
+    {
+        "id": 39,
+        "question": "He ___ to tell the truth, the whole truth, and nothing but the truth.",
+        "options": [
+            "swear",
+            "swore",
+            "sworn",
+            "swearing"
+        ],
+        "correctAnswer": 1,
+        "level": "B2"
+    },
+    {
+        "id": 40,
+        "question": "The documentary was ___ live across multiple continents simultaneously.",
+        "options": [
+            "broadcast",
+            "broadcasted",
+            "broadcasting",
+            "broadcasts"
+        ],
+        "correctAnswer": 0,
+        "level": "B2"
+    },
+    {
+        "id": 41,
+        "question": "The government has ___ crucial evidence from the parliamentary inquiry.",
+        "options": [
+            "withhold",
+            "withheld",
+            "withholded",
+            "withholding"
+        ],
+        "correctAnswer": 1,
+        "level": "C1"
+    },
+    {
+        "id": 42,
+        "question": "A catastrophe of unprecedented magnitude ___ the coastal region.",
+        "options": [
+            "befall",
+            "befell",
+            "befallen",
+            "befalling"
+        ],
+        "correctAnswer": 1,
+        "level": "C1"
+    },
+    {
+        "id": 43,
+        "question": "He was utterly ___ by her eloquence and intellectual depth.",
+        "options": [
+            "smite",
+            "smote",
+            "smitten",
+            "smiting"
+        ],
+        "correctAnswer": 2,
+        "level": "C1"
+    },
+    {
+        "id": 44,
+        "question": "Throughout history, societies that ___ their core values have inevitably declined.",
+        "options": [
+            "forsake",
+            "forsook",
+            "forsaken",
+            "forsaking"
+        ],
+        "correctAnswer": 1,
+        "level": "C1"
+    },
+    {
+        "id": 45,
+        "question": "She has consistently ___ for excellence throughout her distinguished career.",
+        "options": [
+            "strive",
+            "strove",
+            "striven",
+            "striving"
+        ],
+        "correctAnswer": 2,
+        "level": "C1"
+    },
+    {
+        "id": 46,
+        "question": "One must ___ by the regulations stipulated in the constitution.",
+        "options": [
+            "abide",
+            "abode",
+            "abided",
+            "abiding"
+        ],
+        "correctAnswer": 0,
+        "level": "C1"
+    },
+    {
+        "id": 47,
+        "question": "The knight ___ the dragon after an epic battle lasting three days.",
+        "options": [
+            "slay",
+            "slew",
+            "slain",
+            "slaying"
+        ],
+        "correctAnswer": 1,
+        "level": "C1"
+    },
+    {
+        "id": 48,
+        "question": "Inequality invariably ___ social unrest and political instability.",
+        "options": [
+            "beget",
+            "begot",
+            "begotten",
+            "begets"
+        ],
+        "correctAnswer": 3,
+        "level": "C1"
+    },
+    {
+        "id": 49,
+        "question": "The executioner's blade ___ the thick rope with a single devastating stroke.",
+        "options": [
+            "cleave",
+            "clove",
+            "cloven",
+            "cleaving"
+        ],
+        "correctAnswer": 1,
+        "level": "C1"
+    },
+    {
+        "id": 50,
+        "question": "All the distinguished guests have graciously ___ of the ceremonial banquet.",
+        "options": [
+            "partake",
+            "partook",
+            "partaken",
+            "partaking"
+        ],
+        "correctAnswer": 2,
+        "level": "C1"
+    }
+]

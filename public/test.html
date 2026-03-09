@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Daily Verb Flow - İngilizce Seviye Tespit Testi">
+    <title>Seviye Testi | Daily Verb Flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/test.css">
+</head>
+
+<body>
+    <div class="bg-particles"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav__logo">
+            <span class="nav__logo-icon">📚</span>
+            <span class="nav__logo-text">Daily Verb Flow</span>
+        </div>
+    </nav>
+
+    <main class="test-container">
+        <!-- Welcome Screen -->
+        <div class="screen" id="welcome-screen">
+            <div class="welcome-card">
+                <div class="welcome-card__icon">📝</div>
+                <h1 class="welcome-card__title">Seviye Tespit Testi</h1>
+                <p class="welcome-card__desc">
+                    15 soruluk bu test ile İngilizce seviyenizi belirliyoruz.
+                    Sorular doğru cevapladıkça zorlaşır. Hazır olunca başlayın!
+                </p>
+                <div class="welcome-card__info">
+                    <div class="info-item">
+                        <span class="info-item__icon">📊</span>
+                        <span>15 Soru</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item__icon">⏱️</span>
+                        <span>~5 Dakika</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item__icon">🎯</span>
+                        <span>Adaptive</span>
+                    </div>
+                </div>
+                <button class="btn-primary" id="start-test-btn">
+                    Teste Başla
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Question Screen -->
+        <div class="screen hidden" id="question-screen">
+            <!-- Progress Bar -->
+            <div class="progress">
+                <div class="progress__bar">
+                    <div class="progress__fill" id="progress-fill"></div>
+                </div>
+                <div class="progress__info">
+                    <span id="question-counter">Soru 1/15</span>
+                    <span id="current-level" class="progress__level">Seviye: A1</span>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="question-card" id="question-card">
+                <div class="question-card__level-badge" id="level-badge">A1</div>
+                <h2 class="question-card__question" id="question-text"></h2>
+
+                <div class="options" id="options-container">
+                    <!-- Options will be injected here -->
+                </div>
+
+                <div class="question-card__feedback hidden" id="feedback">
+                    <div class="feedback__icon" id="feedback-icon"></div>
+                    <p class="feedback__text" id="feedback-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div class="screen hidden" id="result-screen">
+            <div class="result-card">
+                <div class="result-card__confetti" id="confetti"></div>
+                <div class="result-card__icon">🏆</div>
+                <h1 class="result-card__title">Test Tamamlandı!</h1>
+
+                <div class="result-card__level" id="result-level">
+                    <span class="result-card__level-label">Seviyeniz</span>
+                    <span class="result-card__level-value" id="result-level-value">B1</span>
+                </div>
+
+                <div class="result-card__stats">
+                    <div class="stat">
+                        <span class="stat__value" id="result-score">0</span>
+                        <span class="stat__label">Doğru</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value" id="result-total">15</span>
+                        <span class="stat__label">Toplam</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value" id="result-percentage">0%</span>
+                        <span class="stat__label">Başarı</span>
+                    </div>
+                </div>
+
+                <div class="result-card__message" id="result-message"></div>
+
+                <div class="result-card__cta">
+                    <p>Yarın sabah ilk fiilleriniz e-postanıza gelecek! 📬</p>
+                    <button class="btn-primary" onclick="window.location.href='/'">
+                        Ana Sayfaya Dön
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/test.js"></script>
+</body>
+
+</html>

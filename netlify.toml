@@ -1,0 +1,37 @@
+# Netlify Configuration
+# =====================
+
+[build]
+  publish = "public"          # Static dosyalar
+  functions = "netlify/functions"  # Serverless Functions
+
+# Environment variables (Netlify Dashboard'dan da eklenebilir)
+[build.environment]
+  NODE_VERSION = "18"
+
+# API Redirects — /api/* isteklerini Netlify Function'a yönlendir
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# SPA — test sayfası için
+[[redirects]]
+  from = "/test"
+  to = "/test.html"
+  status = 200
+
+# Headers — CORS ve güvenlik
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
