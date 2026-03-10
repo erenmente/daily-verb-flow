@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişim Paneli - Daily Verb Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <div class="decor-circle decor-circle--1"></div>
+    <div class="decor-circle decor-circle--2"></div>
+
+    <div class="dashboard-wrapper">
+        <header class="dashboard-header">
+            <div style="display: flex; align-items: center; gap: 24px;">
+                <a href="index.html" class="logo-link">
+                    <div class="logo">📚 Daily Verb Flow</div>
+                </a>
+                <a href="index.html"
+                    style="text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-muted); transition: color 0.2s; padding: 6px 12px; background: rgba(255,255,255,0.4); border-radius: 6px; border: 1px solid rgba(255,255,255,0.5);">🔙
+                    Ana Sayfaya Dön</a>
+            </div>
+            <div class="user-info hidden" id="userInfoHeader">
+                Merhaba, <span id="headerName">...</span>
+            </div>
+        </header>
+
+        <!-- LOGIN SECTION (if no ID) -->
+        <main class="login-section" id="loginSection">
+            <div class="glass-card login-card">
+                <h2>Panele Giriş Yap</h2>
+                <p>İstatistiklerinizi ve haftalık testinizi görmek için kayıtlı e-postanızı girin.</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-posta Adresiniz</label>
+                        <input type="email" id="loginEmail" placeholder="ornek@mail.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="loginBtn">
+                        <span class="btn-text">Giriş Yap</span>
+                    </button>
+                    <div id="loginError" class="error-text hidden"></div>
+                </form>
+            </div>
+        </main>
+
+        <!-- DASHBOARD SECTION -->
+        <main class="dashboard-section hidden" id="dashboardSection">
+            <div class="stats-grid">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon">🎓</div>
+                    <div class="stat-content">
+                        <h3>Toplam Ezberlenen</h3>
+                        <p class="stat-number" id="totalWordsStat">0</p>
+                    </div>
+                </div>
+
+                <div class="glass-card stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-content">
+                        <h3>Mevcut Seviye</h3>
+                        <p class="stat-number level-badge" id="levelStat">-</p>
+                    </div>
+                </div>
+
+                <div class="glass-card stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-content">
+                        <h3>Bu Haftaki Kelimeler</h3>
+                        <p class="stat-number" id="weekWordsStat">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weekly-quiz-container">
+                <div class="glass-card quiz-promo">
+                    <div class="quiz-promo-content">
+                        <h2>Haftalık Kelime Sınavı 📝</h2>
+                        <p>Bu hafta gönderdiğimiz kelimelerden ne kadarını hatırlıyorsunuz? Yanlış bildiğiniz kelimeler,
+                            tam öğrenene kadar sonraki günlerdeki e-postalarınıza aralıklı tekrar mantığıyla tekrar
+                            eklenecektir.</p>
+
+                        <div class="quiz-status" id="quizStatus">
+                            <!-- JS will populate -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card review-queue hidden" id="reviewQueueCard">
+                    <h3>Tekrar Kuyruğu 🔄</h3>
+                    <p>Önceki sınavlarda yanlış yapıp tekrar gönderilmesini bekleyen <strong id="queueCount">0</strong>
+                        adet kelimeniz bulunuyor.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

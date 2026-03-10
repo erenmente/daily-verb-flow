@@ -1,0 +1,215 @@
+/* dashboard.css - Premium Glassmorphism UI */
+
+.dashboard-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.user-info span {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Login Section */
+.login-card {
+    max-width: 400px;
+    margin: 80px auto;
+    text-align: center;
+    padding: 40px 30px;
+}
+
+.login-card h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.login-card p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+#loginBtn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+}
+
+/* Dashboard Section */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+}
+
+.stat-icon {
+    font-size: 40px;
+    background: rgba(255, 255, 255, 0.5);
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-content h3 {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    line-height: 1;
+}
+
+.level-badge {
+    color: var(--primary);
+}
+
+/* Promo / Quiz / Queue Section */
+.weekly-quiz-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+.quiz-promo {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+    border-left: 6px solid var(--primary);
+    padding: 32px;
+}
+
+.quiz-promo h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.quiz-promo p {
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.quiz-status {
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.review-queue {
+    text-align: center;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.review-queue h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.review-queue p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.review-queue strong {
+    font-size: 24px;
+    color: #f59e0b;
+    /* amber for repeating words */
+    display: block;
+    margin: 8px 0;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .weekly-quiz-container {
+        grid-template-columns: 1fr;
+    }
+}

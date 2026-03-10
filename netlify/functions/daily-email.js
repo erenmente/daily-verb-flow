@@ -46,44 +46,59 @@ const VERBS_PER_USER = 10;
 // ===================================
 // KULLANICIYA UYGUN FİİLLERİ SEÇ
 // ===================================
-async function getVerbsForUser(level, lastSentIndex) {
+async function getVerbsForUser(level, lastSentIndex, reviewQueue = []) {
+    // Spaced Repetition: Yanlış bilinenlerden en fazla 3 tane al
+    const reviewVerbs = reviewQueue.slice(0, 3);
+    const needCount = VERBS_PER_USER - reviewVerbs.length;
+
     const snapshot = await db.collection('vocabulary')
         .where('level', '==', level)
         .orderBy('createdAt', 'asc')
         .offset(lastSentIndex)
-        .limit(VERBS_PER_USER)
+        .limit(needCount)
         .get();
 
-    const verbs = [];
-    snapshot.forEach((doc) => verbs.push({ id: doc.id, ...doc.data() }));
+    const newVerbs = [];
+    snapshot.forEach((doc) => newVerbs.push({ id: doc.id, ...doc.data() }));
 
     // Yetersiz fiil varsa ve sıfırdan döngüye başla
-    if (verbs.length < VERBS_PER_USER && lastSentIndex > 0) {
+    if (newVerbs.length < needCount && lastSentIndex > 0) {
         const moreSnapshot = await db.collection('vocabulary')
             .where('level', '==', level)
             .orderBy('createdAt', 'asc')
-            .limit(VERBS_PER_USER - verbs.length)
+            .limit(needCount - newVerbs.length)
             .get();
-        moreSnapshot.forEach((doc) => verbs.push({ id: doc.id, ...doc.data() }));
+        moreSnapshot.forEach((doc) => newVerbs.push({ id: doc.id, ...doc.data() }));
     }
 
-    return verbs;
+    // Seçilen review kelimelerine özel bir işaret koyabiliriz (e-postada "Tekrar" yazması için)
+    const markedReviewVerbs = reviewVerbs.map(v => ({ ...v, isReview: true }));
+
+    return {
+        verbs: [...markedReviewVerbs, ...newVerbs],
+        newVerbsCount: newVerbs.length,
+        remainingQueue: reviewQueue.slice(3)
+    };
 }
 
 // ===================================
 // HTML E-POSTA OLUŞTUR
 // ===================================
 function buildEmailHTML(userName, verbs, userId) {
-    const baseUrl = process.env.URL || process.env.BASE_URL || 'https://your-site.netlify.app';
+    const baseUrl = process.env.URL || process.env.BASE_URL || 'https://daily-verb-flow.netlify.app';
     const unsubscribeUrl = `${baseUrl}/api/unsubscribe/${userId}`;
+    const dashboardUrl = `${baseUrl}/dashboard.html?u=${userId}`;
+    const isSunday = new Date().getDay() === 0;
 
     const verbRows = verbs.map((verb, i) => `
     <tr>
       <td style="padding:0;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(135deg,#667eea22,#764ba222);border-radius:12px;margin:12px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(135deg,#667eea22,#764ba222);border-radius:12px;margin:12px 0;position:relative;">
           <tr>
             <td style="padding:20px 24px;">
-              <div style="font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Fiil #${i + 1}</div>
+              <div style="font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+                Fiil #${i + 1} ${verb.isReview ? '<span style="background:#fef08a;color:#854d0e;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:bold;margin-left:6px;">🔄 TEKRAR</span>' : ''}
+              </div>
               <div style="font-size:22px;font-weight:700;color:#1e293b;margin-bottom:4px;">${verb.v1} → ${verb.v2} → ${verb.v3}</div>
               <div style="font-size:15px;color:#6366f1;font-weight:600;">🇹🇷 ${verb.meaning}</div>
             </td>
@@ -115,6 +130,11 @@ function buildEmailHTML(userName, verbs, userId) {
   <p style="font-size:14px;color:#64748b;margin:8px 0 0;">İşte bugünkü ${verbs.length} fiilin!</p>
 </td></tr>
 <tr><td style="padding:8px 24px 24px;"><table width="100%" cellpadding="0" cellspacing="0">${verbRows}</table></td></tr>
+<tr><td style="padding:16px 32px;text-align:center;">
+  ${isSunday
+            ? `<a href="${dashboardUrl}" style="display:inline-block;padding:14px 28px;background:#10b981;color:#fff;border-radius:8px;text-decoration:none;font-size:16px;font-weight:bold;box-shadow:0 4px 12px rgba(16,185,129,0.3);">📝 Haftalık Sınavınız Hazır! Hemen Çözün</a>`
+            : `<a href="${dashboardUrl}" style="display:inline-block;padding:12px 24px;background:#e2e8f0;color:#475569;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">📊 Gelişim Panelini Görüntüle</a>`}
+</td></tr>
 <tr><td style="padding:24px 32px;background:#f8fafc;text-align:center;border-top:1px solid #e2e8f0;">
   <p style="font-size:13px;color:#94a3b8;margin:0 0 16px;">Daily Verb Flow aboneliğiniz kapsamında aldınız.</p>
   <a href="${unsubscribeUrl}" style="display:inline-block;padding:10px 24px;background:#fee2e2;color:#dc2626;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">❌ Abonelikten Çık</a>
@@ -135,7 +155,7 @@ async function sendToUser(userDoc) {
     }
 
     try {
-        const verbs = await getVerbsForUser(user.level, user.lastSentIndex || 0);
+        const { verbs, newVerbsCount, remainingQueue } = await getVerbsForUser(user.level, user.lastSentIndex || 0, user.reviewQueue || []);
 
         if (verbs.length === 0) {
             console.log(`⏭️ ${user.email} — fiil bulunamadı.`);
@@ -154,10 +174,16 @@ async function sendToUser(userDoc) {
             html,
         });
 
-        // lastSentIndex güncelle
+        // Update metrics
+        const currentWordsThisWeek = user.wordsSentThisWeek || [];
+        // We use a Map to keep unique words if they are already in the week list
+        const mergedWeekMap = new Map([...currentWordsThisWeek, ...verbs].map(v => [v.v1, v]));
+
         await db.collection('users').doc(userId).update({
-            lastSentIndex: (user.lastSentIndex || 0) + verbs.length,
+            lastSentIndex: (user.lastSentIndex || 0) + newVerbsCount,
             lastEmailSentAt: new Date(),
+            reviewQueue: remainingQueue,
+            wordsSentThisWeek: Array.from(mergedWeekMap.values())
         });
 
         console.log(`✅ ${user.email} — mail gönderildi (${verbs.length} fiil)`);

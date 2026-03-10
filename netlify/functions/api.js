@@ -34,7 +34,7 @@ app.use(express.json());
 // Firebase kontrolü
 function requireFirebase(req, res) {
     if (!db) {
-        res.status(503).json({ error: 'Firebase yapılandırılmamış.' });
+        res.status(503).json({ error: 'Sistem şu anda geçici olarak hizmet veremiyor. Lütfen daha sonra tekrar deneyin.' });
         return false;
     }
     return true;
@@ -52,6 +52,7 @@ app.post('/api/register', async (req, res) => {
 
         const userRef = await db.collection('users').add({
             name, email, level: null, startDate: new Date(), lastSentIndex: 0, isActive: true,
+            totalWordsMemorized: 0, wordsSentThisWeek: [], reviewQueue: []
         });
 
         res.status(201).json({ success: true, userId: userRef.id, message: 'Kayıt başarılı!' });
@@ -93,6 +94,126 @@ app.get('/api/unsubscribe/:userId', async (req, res) => {
     } catch (error) {
         console.error('Unsubscribe error:', error);
         res.status(500).send('Hata oluştu.');
+    }
+});
+
+// POST /api/login
+app.post('/api/login', async (req, res) => {
+    if (!requireFirebase(req, res)) return;
+    try {
+        const { email } = req.body;
+        if (!email) return res.status(400).json({ error: 'E-posta zorunludur.' });
+
+        const existing = await db.collection('users').where('email', '==', email).limit(1).get();
+        if (existing.empty) return res.status(404).json({ error: 'Bu e-posta adresi ile kayıt bulunamadı.' });
+
+        const userDoc = existing.docs[0];
+        res.json({ success: true, userId: userDoc.id, name: userDoc.data().name });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Giriş sırasında hata oluştu.' });
+    }
+});
+
+// GET /api/dashboard/:userId
+app.get('/api/dashboard/:userId', async (req, res) => {
+    if (!requireFirebase(req, res)) return;
+    try {
+        const doc = await db.collection('users').doc(req.params.userId).get();
+        if (!doc.exists) return res.status(404).json({ error: 'Kullanıcı bulunamadı.' });
+
+        const data = doc.data();
+        res.json({
+            success: true,
+            user: {
+                name: data.name,
+                level: data.level,
+                totalWordsMemorized: data.totalWordsMemorized || 0,
+                wordsSentThisWeekCount: (data.wordsSentThisWeek || []).length,
+                reviewQueueCount: (data.reviewQueue || []).length,
+                isActive: data.isActive
+            }
+        });
+    } catch (error) {
+        console.error('Dashboard error:', error);
+        res.status(500).json({ error: 'Bilgiler alınırken hata oluştu.' });
+    }
+});
+
+// GET /api/quiz/:userId
+app.get('/api/quiz/:userId', async (req, res) => {
+    if (!requireFirebase(req, res)) return;
+    try {
+        const doc = await db.collection('users').doc(req.params.userId).get();
+        if (!doc.exists) return res.status(404).json({ error: 'Kullanıcı bulunamadı.' });
+
+        const data = doc.data();
+        const words = data.wordsSentThisWeek || [];
+
+        if (words.length < 4) return res.json({ success: true, questions: [], message: 'Sınav oluşturmak için haftalık en az 4 kelimeniz birikmiş olmalı.' });
+
+        const questions = words.map(word => {
+            let wrongOptions = words.filter(w => w.v1 !== word.v1).map(w => w.meaning);
+            wrongOptions = wrongOptions.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+            // Eğer kelime sayısı azsa eksik şıkları uydurma kelimelerle doldurabiliriz ama 4 kelime kontrolü sayesinde gerek yok.
+            const options = [...wrongOptions, word.meaning].sort(() => 0.5 - Math.random());
+
+            return {
+                id: word.v1,
+                verb: word.v1,
+                correct_v2: word.v2,
+                correct_v3: word.v3,
+                correctOption: word.meaning,
+                options: options
+            };
+        });
+
+        res.json({ success: true, questions });
+    } catch (error) {
+        console.error('Quiz error:', error);
+        res.status(500).json({ error: 'Sınav oluşturulurken hata oluştu.' });
+    }
+});
+
+// POST /api/submit-quiz
+app.post('/api/submit-quiz', async (req, res) => {
+    if (!requireFirebase(req, res)) return;
+    try {
+        const { userId, correctIds, incorrectIds } = req.body;
+        if (!userId || !Array.isArray(correctIds) || !Array.isArray(incorrectIds)) {
+            return res.status(400).json({ error: 'Geçersiz veri biçimi.' });
+        }
+
+        const userRef = db.collection('users').doc(userId);
+        const doc = await userRef.get();
+        if (!doc.exists) return res.status(404).json({ error: 'Kullanıcı bulunamadı.' });
+
+        const data = doc.data();
+        const currentTotal = data.totalWordsMemorized || 0;
+        const currentQueue = data.reviewQueue || [];
+        const wordsThisWeek = data.wordsSentThisWeek || [];
+
+        // Yeni yanlış yapılanları tespit edip reviewQueue'e ekle
+        const newReviewItems = wordsThisWeek.filter(w => incorrectIds.includes(w.v1));
+        const mergedQueue = [...currentQueue];
+
+        for (const item of newReviewItems) {
+            if (!mergedQueue.find(q => q.v1 === item.v1)) {
+                mergedQueue.push(item);
+            }
+        }
+
+        await userRef.update({
+            totalWordsMemorized: currentTotal + correctIds.length,
+            reviewQueue: mergedQueue,
+            wordsSentThisWeek: [] // Sınav bitince haftalık veriyi sıfırla
+        });
+
+        res.json({ success: true, message: 'Sonuçlar başarıyla kaydedildi!' });
+    } catch (error) {
+        console.error('Submit quiz error:', error);
+        res.status(500).json({ error: 'Sınav sonucu kaydedilemedi.' });
     }
 });
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haftalık Sınav - Daily Verb Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/quiz.css">
+</head>
+
+<body>
+    <div class="decor-circle decor-circle--1"></div>
+    <div class="decor-circle decor-circle--2"></div>
+
+    <div class="quiz-wrapper">
+        <header class="quiz-header">
+            <div style="display: flex; align-items: center; gap: 24px;">
+                <a href="dashboard.html" class="back-link" id="backLink" style="font-size: 16px;">← Panele Dön</a>
+                <a href="index.html"
+                    style="text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-muted); transition: color 0.2s; padding: 6px 12px; background: rgba(255,255,255,0.4); border-radius: 6px; border: 1px solid rgba(255,255,255,0.5);">🔙
+                    Ana Sayfaya Dön</a>
+            </div>
+            <div class="progress-container">
+                <div class="progress-text">Soru <span id="currentQuestionNum">1</span> / <span
+                        id="totalQuestionsNum">10</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="glass-card loading-card">
+            <h2>Sınavınız Hazırlanıyor... ⏳</h2>
+            <p>Bu haftaki kelimeleriniz derleniyor.</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="glass-card error-card hidden">
+            <h2>Hata Oluştu ❌</h2>
+            <p id="errorMsg">Sınav yüklenemedi.</p>
+            <a href="dashboard.html" class="btn btn-primary" id="errorBtn">Geri Dön</a>
+        </div>
+
+        <!-- Quiz Container -->
+        <main class="glass-card quiz-card hidden" id="quizCard">
+            <div class="question-header">
+                <span class="question-label">Aşağıdaki fiilin anlamı nedir?</span>
+                <h2 class="verb-display" id="verbText">...</h2>
+                <div class="verb-forms" id="verbForms">...</div>
+            </div>
+
+            <div class="options-grid" id="optionsGrid">
+                <!-- Options populated by JS -->
+            </div>
+        </main>
+
+        <!-- Results Container -->
+        <main class="glass-card results-card hidden" id="resultsCard">
+            <div class="results-icon">🎯</div>
+            <h2>Sınav Tamamlandı!</h2>
+
+            <div class="score-display">
+                <span id="scoreText">0</span> / <span id="totalScoreText">0</span>
+            </div>
+            <p class="score-message" id="scoreMessage">Tebrikler!</p>
+
+            <div class="results-info">
+                <p>Doğru bildiğiniz kelimeler ezberlenenler listenize eklendi.</p>
+                <p>Yanlış bildikleriniz ise <strong>aralıklı tekrar</strong> algoritmasına alındı ve tamamen öğrenene
+                    kadar önümüzdeki günlerde e-postalarınıza aralıklarla eklenecek.</p>
+            </div>
+
+            <button class="btn btn-primary" id="finishBtn">
+                <span class="btn-text">Sonuçları Kaydet ve Çık</span>
+            </button>
+        </main>
+    </div>
+
+    <script src="js/quiz.js"></script>
+</body>
+
+</html>
