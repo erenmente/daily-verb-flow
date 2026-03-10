@@ -81,14 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const quizStatusContainer = document.getElementById('quizStatus');
             if (user.wordsSentThisWeekCount >= 4) {
                 quizStatusContainer.innerHTML = `
-                    <div style="background:#ecfdf5;color:#065f46;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px;border:1px solid #a7f3d0;">
+                    <div style="background:rgba(16, 185, 129, 0.1);color:#34d399;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px;border:1px solid rgba(16, 185, 129, 0.2);">
                         ✅ Sınavınız hazır! Bu hafta öğrendiğiniz kelimelerden oluşuyor.
                     </div>
                     <a href="quiz.html?u=${uid}" class="btn btn-primary" style="display:inline-block;text-align:center;text-decoration:none;">Sınava Başla</a>
                 `;
             } else {
                 quizStatusContainer.innerHTML = `
-                    <div style="background:#f1f5f9;color:#475569;padding:12px 16px;border-radius:8px;font-size:14px;border:1px solid #e2e8f0;">
+                    <div style="background:rgba(255, 255, 255, 0.05);color:var(--text-muted);padding:12px 16px;border-radius:8px;font-size:14px;border:1px solid rgba(255, 255, 255, 0.1);">
                         ⏳ Sınav oluşturabilmemiz için size bu hafta en az 4 kelime e-postası göndermiş olmalıyız. Şu an ${user.wordsSentThisWeekCount} kelime birikti. Lütfen yarın tekrar kontrol edin.
                     </div>
                 `;

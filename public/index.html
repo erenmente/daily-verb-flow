@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css?v=4">
 </head>
 
 <body>
@@ -20,17 +20,15 @@
 
   <main class="landing">
     <!-- Navigation -->
-    <nav class="nav" id="nav" style="display: flex; align-items: center;">
-      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+    <nav class="nav" id="nav" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+      <a href="index.html" style="text-decoration:none;">
         <div class="nav__logo">
           <span class="nav__logo-icon">📚</span>
-          <span class="nav__logo-text" style="color:var(--text)">Daily Verb Flow</span>
+          <span class="nav__logo-text">Daily Verb Flow</span>
         </div>
       </a>
-      <div class="nav__actions" style="margin-left: auto;">
-        <a href="dashboard.html"
-          style="text-decoration: none; font-size: 14px; font-weight: 600; color: var(--primary); background: rgba(255,255,255,0.7); padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.8); transition: all 0.2s;">📊
-          Gelişim Paneli</a>
+      <div class="nav__actions">
+        <a href="dashboard.html" class="btn-nav btn-nav--primary">Gelişim Paneli &rarr;</a>
       </div>
     </nav>
 

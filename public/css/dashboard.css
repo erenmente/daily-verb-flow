@@ -30,12 +30,12 @@
 }
 
 .user-info {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
     padding: 10px 20px;
     border-radius: 12px;
     font-size: 15px;
     color: var(--text-muted);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .user-info span {
@@ -79,8 +79,9 @@
     width: 100%;
     padding: 14px 16px;
     border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
     font-size: 16px;
     font-family: inherit;
     transition: all 0.3s ease;
@@ -116,14 +117,15 @@
 
 .stat-icon {
     font-size: 40px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05);
     width: 70px;
     height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .stat-content h3 {
@@ -153,7 +155,8 @@
 }
 
 .quiz-promo {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-left: 6px solid var(--primary);
     padding: 32px;
 }
@@ -173,7 +176,7 @@
 
 .quiz-status {
     padding-top: 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .review-queue {
