@@ -118,4 +118,4 @@ Zamanlanmış fonksiyon (`daily-email.js`), Netlify'ın "Scheduled Functions" ö
 Bu proje Eren Mente tarafından geliştirilmiştir.
 
 ---
-*Canlı Demo: [https://daily-verb-flow.netlify.app/](https://daily-verb-flow.netlify.app/)*
+*Canlı Demo: [https://daily-verb-flow.netlify.app/](https://verb.erenmente.com/)*
