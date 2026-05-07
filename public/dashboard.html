@@ -16,25 +16,22 @@
 
     <div class="dashboard-wrapper">
         <header class="dashboard-header">
-            <div style="display: flex; align-items: center; gap: 24px;">
-                <a href="index.html" class="logo-link">
-                    <div class="logo">📚 Daily Verb Flow</div>
-                </a>
-                <a href="index.html" class="btn-nav">&larr; Ana sayfa</a>
-            </div>
+            <a href="index.html" class="btn-nav dashboard-header__back">&larr; Ana sayfa</a>
+            <a href="index.html" class="logo-link dashboard-header__brand" aria-label="Daily Verb Flow ana sayfa">
+                <div class="logo"><span class="logo-mark" aria-hidden="true"></span> Daily Verb Flow</div>
+            </a>
             <div class="user-info hidden" id="userInfoHeader">
                 Merhaba, <span id="headerName">...</span>
             </div>
         </header>
 
-        <!-- LOGIN SECTION (if no ID) -->
         <main class="login-section" id="loginSection">
             <div class="glass-card login-card">
                 <h2>Güvenli panel bağlantısı</h2>
                 <p>Kayıtlı e-postanıza tek kullanımlık giriş bağlantısı göndeririz. Şifre hatırlamanıza gerek yok.</p>
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="loginEmail">E-posta Adresiniz</label>
+                        <label for="loginEmail">E-posta adresiniz</label>
                         <input type="email" id="loginEmail" placeholder="ornek@mail.com" required>
                     </div>
                     <button type="submit" class="btn btn-primary" id="loginBtn">
@@ -45,11 +42,10 @@
             </div>
         </main>
 
-        <!-- DASHBOARD SECTION -->
         <main class="dashboard-section hidden" id="dashboardSection">
             <div class="stats-grid">
                 <div class="glass-card stat-card">
-                    <div class="stat-icon">🎓</div>
+                    <div class="stat-icon">▣</div>
                     <div class="stat-content">
                         <h3>Kalıcı öğrenilen</h3>
                         <p class="stat-number" id="totalWordsStat">0</p>
@@ -57,15 +53,15 @@
                 </div>
 
                 <div class="glass-card stat-card">
-                    <div class="stat-icon">📈</div>
+                    <div class="stat-icon">↗</div>
                     <div class="stat-content">
-                        <h3>Mevcut Seviye</h3>
+                        <h3>Mevcut seviye</h3>
                         <p class="stat-number level-badge" id="levelStat">-</p>
                     </div>
                 </div>
 
                 <div class="glass-card stat-card">
-                    <div class="stat-icon">🔥</div>
+                    <div class="stat-icon">◇</div>
                     <div class="stat-content">
                         <h3>Bu haftaki fiiller</h3>
                         <p class="stat-number" id="weekWordsStat">0</p>
@@ -80,9 +76,7 @@
                         <p>Bu hafta gönderilen fiillerden kısa bir kontrol yapın. Yanlış cevaplanan fiiller tekrar
                             kuyruğuna alınır ve sonraki e-postalarda yeniden görünür.</p>
 
-                        <div class="quiz-status" id="quizStatus">
-                            <!-- JS will populate -->
-                        </div>
+                        <div class="quiz-status" id="quizStatus"></div>
                     </div>
                 </div>
 

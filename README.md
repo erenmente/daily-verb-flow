@@ -42,7 +42,7 @@ FIREBASE_CLIENT_EMAIL=your-client-email@your-project.iam.gserviceaccount.com
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY\n-----END PRIVATE KEY-----\n"
 
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxx
-SENDGRID_FROM_EMAIL=dailyverbflow@yourdomain.com
+SENDGRID_FROM_EMAIL=noreply@erenmente.com
 SENDGRID_FROM_NAME=Daily Verb Flow
 
 GEMINI_API_KEY=AIzaXXXXXXXXXXXXXXXXXXXXX
@@ -55,6 +55,14 @@ EMAIL_JOB_BATCH_SIZE=5
 ```
 
 `BASE_URL` is used when generating dashboard, quiz, login, and unsubscribe links. `APP_ORIGIN` and `ALLOWED_ORIGINS` control API CORS; production should list only the deployed site origins.
+
+For production, prefer real public URLs in email links:
+
+```env
+BASE_URL=https://verb.erenmente.com
+APP_ORIGIN=https://verb.erenmente.com
+ALLOWED_ORIGINS=https://verb.erenmente.com
+```
 
 ## Auth And Tokens
 
@@ -95,6 +103,35 @@ vocabulary: level ASC, createdAt ASC, __name__ ASC
 ```
 
 If `/api/send-daily` returns `FAILED_PRECONDITION: The query requires an index`, open the Firebase Console link returned in the error response and create the suggested index. It can take a few minutes to become ready.
+
+To test the daily email flow for one user locally:
+
+```powershell
+$body = @{ email = "you@example.com" } | ConvertTo-Json
+$response = Invoke-WebRequest -UseBasicParsing -Method POST http://localhost:3000/api/send-daily -ContentType "application/json" -Body $body
+$response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 10
+```
+
+If the response contains `already_sent_today`, clear or backdate that user's `lastEmailSentDate` field in Firestore before re-testing.
+
+## SendGrid Deliverability
+
+Use SendGrid Domain Authentication for the sender domain. The project has been tested with SPF, DKIM, and DMARC passing in Gmail's "Show original" view.
+
+Recommended production sender:
+
+```env
+SENDGRID_FROM_EMAIL=noreply@erenmente.com
+SENDGRID_FROM_NAME=Daily Verb Flow
+```
+
+DNS checklist:
+
+- SendGrid Domain Authentication CNAME records are verified.
+- A DMARC TXT record exists, for example `_dmarc` with `v=DMARC1; p=none; rua=mailto:you@example.com; adkim=r; aspf=r`.
+- `BASE_URL` points to the production domain rather than `localhost`.
+
+New domains or shared SendGrid IPs can still land in spam at first. Mark test messages as "Not spam" and avoid repeatedly sending identical test emails to the same Gmail inbox in a short window.
 
 ## Quiz And Placement
 
