@@ -1,46 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const apiRoutes = require('./routes/api');
-const { startScheduler } = require('./services/scheduler');
+require("dotenv").config();
 
-const app = express();
+const { createApp } = require("./app");
+const { startScheduler } = require("./services/scheduler");
+const { db } = require("./config/firebase");
+
 const PORT = process.env.PORT || 3000;
+const app = createApp({ serveStatic: true });
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Static dosyalar
-app.use(express.static(path.join(__dirname, 'public')));
-
-// API Routes
-app.use('/api', apiRoutes);
-
-// Ana sayfa
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Test sayfası
-app.get('/test', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'test.html'));
-});
-
-// Sunucuyu başlat
 app.listen(PORT, () => {
-    console.log(`\n🚀 Daily Verb Flow sunucusu çalışıyor!`);
-    console.log(`📍 http://localhost:${PORT}\n`);
-
-    // Scheduler'ı başlat (Firebase yapılandırılmışsa)
-    if (process.env.FIREBASE_PROJECT_ID) {
-        startScheduler();
-    } else {
-        console.log('⚠️  Firebase yapılandırılmamış — scheduler devre dışı.');
-        console.log('   .env dosyasına Firebase bilgilerini ekleyin.\n');
-    }
+  console.log(`Daily Verb Flow server is running at http://localhost:${PORT}`);
+  if (db) {
+    startScheduler();
+  } else {
+    console.log("Firebase is not configured; API and scheduler are limited.");
+  }
 });
 
 module.exports = app;

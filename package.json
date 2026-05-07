@@ -6,6 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:watch": "node --test --watch \"test/**/*.test.js\"",
+    "lint": "eslint .",
+    "format": "prettier \"{app.js,server.js,routes/**/*.js,services/**/*.js,utils/**/*.js,netlify/functions/**/*.js,test/**/*.js,public/js/**/*.js,package.json,README.md,*.toml,.eslintrc.cjs}\" --ignore-unknown --write",
+    "format:check": "prettier \"{app.js,server.js,routes/**/*.js,services/**/*.js,utils/**/*.js,netlify/functions/**/*.js,test/**/*.js,public/js/**/*.js,package.json,README.md,*.toml,.eslintrc.cjs}\" --ignore-unknown --check",
+    "check": "npm run lint && npm test && npm run format:check",
     "seed": "node seeds/verbs.js",
     "seed-extra": "node seeds/verbs-extra.js",
     "seed-all": "node seeds/verbs.js && node seeds/verbs-extra.js"
@@ -21,5 +27,9 @@
     "node-cron": "^3.0.3",
     "serverless-http": "^4.0.0",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.3.3"
   }
 }

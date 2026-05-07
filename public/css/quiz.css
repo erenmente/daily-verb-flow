@@ -1,22 +1,23 @@
 /* quiz.css - Premium Glassmorphism UI */
 
 .quiz-wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 20px;
-    position: relative;
-    z-index: 10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .quiz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 36px;
+  padding-top: 20px;
 }
 
 .back-link {
@@ -43,17 +44,17 @@
 }
 
 .progress-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 10px;
-    overflow: hidden;
+  height: 8px;
+  background: rgba(226, 232, 240, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary), #a78bfa);
-    border-radius: 10px;
-    transition: width 0.3s ease;
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 10px;
+  transition: width 0.3s ease;
 }
 
 /* Cards */
@@ -74,9 +75,9 @@
 
 /* Question Area */
 .quiz-card {
-    padding: 40px;
-    text-align: center;
-    margin-top: 20px;
+  padding: 38px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .question-header {
@@ -94,10 +95,11 @@
 }
 
 .verb-display {
-    font-size: 42px;
-    color: var(--text);
-    margin: 0 0 8px 0;
-    font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+  margin: 0 0 8px 0;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .verb-forms {
@@ -114,25 +116,25 @@
 }
 
 .option-btn {
-    appearance: none;
-    background: rgba(255, 255, 255, 0.6);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    padding: 18px 24px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: left;
-    font-family: inherit;
+  appearance: none;
+  background: rgba(15, 23, 42, 0.58);
+  border: 1px solid rgba(226, 232, 240, 0.14);
+  padding: 18px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
 }
 
 .option-btn:hover:not(:disabled) {
-    background: #fff;
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+  background: rgba(20, 184, 166, 0.08);
+  border-color: rgba(20, 184, 166, 0.38);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.12);
 }
 
 .option-btn:disabled {
@@ -141,15 +143,21 @@
 }
 
 .option-btn.correct {
-    background: #ecfdf5;
-    border-color: #10b981;
-    color: #065f46;
+  background: rgba(20, 184, 166, 0.13);
+  border-color: #14b8a6;
+  color: #ccfbf1;
 }
 
 .option-btn.wrong {
-    background: #fef2f2;
-    border-color: #ef4444;
-    color: #991b1b;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: #ef4444;
+  color: #fecaca;
+}
+
+.option-btn.selected {
+  background: rgba(37, 99, 235, 0.13);
+  border-color: rgba(96, 165, 250, 0.5);
+  color: #dbeafe;
 }
 
 /* Results Area */
@@ -179,15 +187,15 @@
 }
 
 .results-info {
-    background: rgba(255, 255, 255, 0.5);
-    padding: 24px;
-    border-radius: 12px;
-    font-size: 15px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 40px;
-    text-align: left;
-    border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(15, 23, 42, 0.55);
+  padding: 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 34px;
+  text-align: left;
+  border: 1px solid rgba(226, 232, 240, 0.12);
 }
 
 .results-info p {
@@ -199,5 +207,25 @@
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
+}
+
+@media (max-width: 680px) {
+  .quiz-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .progress-container {
+    width: 100%;
+  }
+
+  .progress-text {
+    text-align: left;
+  }
+
+  .quiz-card,
+  .results-card {
+    padding: 28px 20px;
+  }
 }

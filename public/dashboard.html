@@ -20,7 +20,7 @@
                 <a href="index.html" class="logo-link">
                     <div class="logo">📚 Daily Verb Flow</div>
                 </a>
-                <a href="index.html" class="btn-nav">&larr; Ana Sayfaya Dön</a>
+                <a href="index.html" class="btn-nav">&larr; Ana sayfa</a>
             </div>
             <div class="user-info hidden" id="userInfoHeader">
                 Merhaba, <span id="headerName">...</span>
@@ -30,15 +30,15 @@
         <!-- LOGIN SECTION (if no ID) -->
         <main class="login-section" id="loginSection">
             <div class="glass-card login-card">
-                <h2>Panele Giriş Yap</h2>
-                <p>İstatistiklerinizi ve haftalık testinizi görmek için kayıtlı e-postanızı girin.</p>
+                <h2>Güvenli panel bağlantısı</h2>
+                <p>Kayıtlı e-postanıza tek kullanımlık giriş bağlantısı göndeririz. Şifre hatırlamanıza gerek yok.</p>
                 <form id="loginForm">
                     <div class="form-group">
                         <label for="loginEmail">E-posta Adresiniz</label>
                         <input type="email" id="loginEmail" placeholder="ornek@mail.com" required>
                     </div>
                     <button type="submit" class="btn btn-primary" id="loginBtn">
-                        <span class="btn-text">Giriş Yap</span>
+                        <span class="btn-text">Giriş bağlantısı gönder</span>
                     </button>
                     <div id="loginError" class="error-text hidden"></div>
                 </form>
@@ -51,7 +51,7 @@
                 <div class="glass-card stat-card">
                     <div class="stat-icon">🎓</div>
                     <div class="stat-content">
-                        <h3>Toplam Ezberlenen</h3>
+                        <h3>Kalıcı öğrenilen</h3>
                         <p class="stat-number" id="totalWordsStat">0</p>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                 <div class="glass-card stat-card">
                     <div class="stat-icon">🔥</div>
                     <div class="stat-content">
-                        <h3>Bu Haftaki Kelimeler</h3>
+                        <h3>Bu haftaki fiiller</h3>
                         <p class="stat-number" id="weekWordsStat">0</p>
                     </div>
                 </div>
@@ -76,10 +76,9 @@
             <div class="weekly-quiz-container">
                 <div class="glass-card quiz-promo">
                     <div class="quiz-promo-content">
-                        <h2>Haftalık Kelime Sınavı 📝</h2>
-                        <p>Bu hafta gönderdiğimiz kelimelerden ne kadarını hatırlıyorsunuz? Yanlış bildiğiniz kelimeler,
-                            tam öğrenene kadar sonraki günlerdeki e-postalarınıza aralıklı tekrar mantığıyla tekrar
-                            eklenecektir.</p>
+                        <h2>Haftalık kelime sınavı</h2>
+                        <p>Bu hafta gönderilen fiillerden kısa bir kontrol yapın. Yanlış cevaplanan fiiller tekrar
+                            kuyruğuna alınır ve sonraki e-postalarda yeniden görünür.</p>
 
                         <div class="quiz-status" id="quizStatus">
                             <!-- JS will populate -->
@@ -88,9 +87,8 @@
                 </div>
 
                 <div class="glass-card review-queue hidden" id="reviewQueueCard">
-                    <h3>Tekrar Kuyruğu 🔄</h3>
-                    <p>Önceki sınavlarda yanlış yapıp tekrar gönderilmesini bekleyen <strong id="queueCount">0</strong>
-                        adet kelimeniz bulunuyor.</p>
+                    <h3>Tekrar kuyruğu</h3>
+                    <p>Yeniden çalışılacak <strong id="queueCount">0</strong> fiil var.</p>
                 </div>
             </div>
         </main>

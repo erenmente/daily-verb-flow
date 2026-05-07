@@ -1,183 +1,131 @@
-const express = require('express');
+const express = require("express");
+const {
+  validateRegisterBody,
+  validateLoginBody,
+  validateSubmitTestBody,
+  validateSubmitQuizBody,
+  normalizeEmail,
+  requireUserId,
+  requireAccessToken,
+} = require("../utils/validation");
+const { asyncHandler } = require("../utils/errors");
+const {
+  registerUser,
+  requestLoginLink,
+  getAuthorizedUser,
+  submitPlacementTest,
+  unsubscribeByToken,
+} = require("../services/userService");
+const { sendDailyEmails } = require("../services/scheduler");
+const { getQuizForUser, submitQuiz } = require("../services/quizService");
+
 const router = express.Router();
-const { db } = require('../config/firebase');
-const { sendDailyEmails } = require('../services/scheduler');
 
-// Firebase yoksa bilgilendir
-function requireFirebase(req, res) {
-    if (!db) {
-        res.status(503).json({
-            error: 'Firebase yapılandırılmamış. .env dosyasına Firebase bilgilerini ekleyin.',
-            demo: true
-        });
-        return false;
-    }
-    return true;
-}
+router.post(
+  "/register",
+  asyncHandler(async (req, res) => {
+    const input = validateRegisterBody(req.body);
+    const result = await registerUser(input);
 
-// ============================================
-// POST /api/register — Kullanıcı kaydı
-// ============================================
-router.post('/register', async (req, res) => {
-    if (!requireFirebase(req, res)) return;
-    try {
-        const { name, email } = req.body;
+    res.status(201).json({
+      success: true,
+      userId: result.userId,
+      accessToken: result.accessToken,
+      message: "Kayit basarili. Simdi seviye testine yonlendiriliyorsunuz.",
+    });
+  }),
+);
 
-        if (!name || !email) {
-            return res.status(400).json({ error: 'Ad ve e-posta zorunludur.' });
-        }
+router.post(
+  "/submit-test",
+  asyncHandler(async (req, res) => {
+    const input = validateSubmitTestBody(req.body);
+    const result = await submitPlacementTest(input);
+    res.json({
+      success: true,
+      ...result,
+      message: `Seviyeniz ${result.level} olarak belirlendi.`,
+    });
+  }),
+);
 
-        // E-posta zaten kayıtlı mı kontrol et
-        const existing = await db
-            .collection('users')
-            .where('email', '==', email)
-            .limit(1)
-            .get();
+router.get(
+  "/unsubscribe/:token",
+  asyncHandler(async (req, res) => {
+    const token = requireAccessToken(req.params.token);
+    await unsubscribeByToken(token);
+    res.type("html").send(`<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abonelik Iptal Edildi</title>
+<style>body{font-family:Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#1e293b}.card{background:#fff;border:1px solid #e2e8f0;padding:36px;border-radius:12px;text-align:center;max-width:420px}</style>
+</head><body><div class="card"><h2>Aboneliginiz iptal edildi</h2><p>Daily Verb Flow e-postalari artik gonderilmeyecek.</p></div></body></html>`);
+  }),
+);
 
-        if (!existing.empty) {
-            return res.status(409).json({ error: 'Bu e-posta adresi zaten kayıtlı.' });
-        }
+router.post(
+  "/send-daily",
+  asyncHandler(async (req, res) => {
+    const email = req.body?.email ? normalizeEmail(req.body.email) : null;
+    const result = await sendDailyEmails({ email });
+    res.json({ success: true, result });
+  }),
+);
 
-        // Yeni kullanıcı oluştur
-        const userRef = await db.collection('users').add({
-            name,
-            email,
-            level: null, // Test sonrası atanacak
-            startDate: new Date(),
-            lastSentIndex: 0,
-            isActive: true,
-        });
+router.post(
+  "/login",
+  asyncHandler(async (req, res) => {
+    const input = validateLoginBody(req.body);
+    await requestLoginLink(input);
+    res.json({
+      success: true,
+      message:
+        "Guvenli giris baglantisi kayitli e-posta adresinize gonderildi.",
+    });
+  }),
+);
 
-        res.status(201).json({
-            success: true,
-            userId: userRef.id,
-            message: 'Kayıt başarılı! Şimdi seviye testine yönlendiriliyorsunuz.',
-        });
-    } catch (error) {
-        console.error('Register error:', error);
-        res.status(500).json({ error: 'Kayıt sırasında bir hata oluştu.' });
-    }
-});
+router.get(
+  "/dashboard/:userId",
+  asyncHandler(async (req, res) => {
+    const userId = requireUserId(req.params.userId);
+    const token = requireAccessToken(req.query.token);
+    const { user } = await getAuthorizedUser(userId, token);
 
-// ============================================
-// POST /api/submit-test — Seviye testi sonucu
-// ============================================
-router.post('/submit-test', async (req, res) => {
-    if (!requireFirebase(req, res)) return;
-    try {
-        const { userId, score, totalQuestions } = req.body;
+    res.json({
+      success: true,
+      user: {
+        name: user.name,
+        level: user.level,
+        totalWordsMemorized: user.totalWordsMemorized || 0,
+        wordsSentThisWeekCount: (user.wordsSentThisWeek || []).length,
+        reviewQueueCount: (user.reviewQueue || []).length,
+        isActive: user.isActive,
+      },
+    });
+  }),
+);
 
-        if (!userId || score === undefined || !totalQuestions) {
-            return res.status(400).json({ error: 'Eksik veri.' });
-        }
+router.get(
+  "/quiz/:userId",
+  asyncHandler(async (req, res) => {
+    const userId = requireUserId(req.params.userId);
+    const token = requireAccessToken(req.query.token);
+    const quiz = await getQuizForUser({ userId, token });
+    res.json({ success: true, ...quiz });
+  }),
+);
 
-        // Skora göre seviye belirle
-        const percentage = (score / totalQuestions) * 100;
-        let level;
-
-        if (percentage <= 20) {
-            level = 'A1';
-        } else if (percentage <= 40) {
-            level = 'A2';
-        } else if (percentage <= 60) {
-            level = 'B1';
-        } else if (percentage <= 80) {
-            level = 'B2';
-        } else {
-            level = 'C1';
-        }
-
-        // Kullanıcı seviyesini güncelle
-        await db.collection('users').doc(userId).update({
-            level,
-            testScore: score,
-            testCompletedAt: new Date(),
-        });
-
-        res.json({
-            success: true,
-            level,
-            score,
-            percentage: Math.round(percentage),
-            message: `Seviyeniz ${level} olarak belirlendi!`,
-        });
-    } catch (error) {
-        console.error('Submit test error:', error);
-        res.status(500).json({ error: 'Test sonucu kaydedilirken hata oluştu.' });
-    }
-});
-
-// ============================================
-// GET /api/unsubscribe/:userId — Abonelikten çık
-// ============================================
-router.get('/unsubscribe/:userId', async (req, res) => {
-    if (!requireFirebase(req, res)) return;
-    try {
-        const { userId } = req.params;
-
-        await db.collection('users').doc(userId).update({
-            isActive: false,
-            unsubscribedAt: new Date(),
-        });
-
-        res.send(`
-      <!DOCTYPE html>
-      <html lang="tr">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Abonelik İptal Edildi</title>
-        <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #1e293b;
-          }
-          .card {
-            background: white;
-            padding: 48px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            max-width: 420px;
-          }
-          .card .icon { font-size: 48px; margin-bottom: 16px; }
-          .card h2 { font-size: 22px; margin-bottom: 8px; }
-          .card p { color: #64748b; font-size: 15px; line-height: 1.6; }
-        </style>
-      </head>
-      <body>
-        <div class="card">
-          <div class="icon">👋</div>
-          <h2>Aboneliğiniz İptal Edildi</h2>
-          <p>Artık Daily Verb Flow e-postaları almayacaksınız. Bizi tercih ettiğiniz için teşekkürler!</p>
-        </div>
-      </body>
-      </html>
-    `);
-    } catch (error) {
-        console.error('Unsubscribe error:', error);
-        res.status(500).send('Abonelik iptal edilirken bir hata oluştu.');
-    }
-});
-
-// ============================================
-// POST /api/send-daily — Manuel test tetiklemesi
-// ============================================
-router.post('/send-daily', async (req, res) => {
-    if (!requireFirebase(req, res)) return;
-    try {
-        await sendDailyEmails();
-        res.json({ success: true, message: 'Günlük mailler gönderildi.' });
-    } catch (error) {
-        console.error('Send daily error:', error);
-        res.status(500).json({ error: 'Mail gönderimi sırasında hata oluştu.' });
-    }
-});
+router.post(
+  "/submit-quiz",
+  asyncHandler(async (req, res) => {
+    const input = validateSubmitQuizBody(req.body);
+    const result = await submitQuiz(input);
+    res.json({
+      success: true,
+      message: "Quiz sonuclari kaydedildi.",
+      result,
+    });
+  }),
+);
 
 module.exports = router;

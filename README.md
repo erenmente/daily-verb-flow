@@ -1,121 +1,117 @@
-# Daily Verb Flow 🚀
+# Daily Verb Flow
 
-Daily Verb Flow, kullanıcıların İngilizce kelime dağarcığını geliştirmelerine yardımcı olmak için tasarlanmış otomatik ve sunucusuz (serverless) bir web uygulamasıdır. Seviye tespit sınavı ile kullanıcının İngilizce seviyesini belirler ve haftanın her günü (Türkiye saati ile 08:00'de) kullanıcının e-posta adresine 10 yeni İngilizce fiil (V1, V2, V3 formları) ve örnek cümleler içeren kişiselleştirilmiş mail kampanyaları gönderir.
+Daily Verb Flow is a Node.js/Express + Vanilla JS app for English verb practice. Users register, complete a placement test, receive daily verb emails, review a dashboard, and complete weekly quizzes. The same Express app powers local development and Netlify Functions.
 
-## 🌟 Özellikler
-
-- **Modern & Responsive Tasarım**: Etkileyici bir kullanıcı deneyimi için Glassmorphism (cam efekti) estetiği.
-- **Adaptif Seviye Testi**: Kullanıcının CEFR seviyesini (A1'den C1'e) doğru bir şekilde belirleyebilmek için, verilen cevaplara göre zorluğu değişen 15 soruluk dinamik bir sınav.
-- **Otomatik Günlük E-postalar**: Her sabah kullanıcıların e-posta kutusuna özelleştirilmiş kelime listeleri göndermek için çalışan zamanlanmış görevler (Cron job).
-- **Yapay Zeka Destekli İçerik**: Veritabanındaki kelime stoğu azaldığında, manuel müdahaleye gerek kalmadan Google Gemini 2.0 Flash kullanarak fiiller için yepyeni örnek cümleler üreten akıllı sistem.
-- **Akıllı Önbellekleme (Caching)**: Yapay zeka ile üretilen tüm içerikler gelecekteki kullanımlar için veritabanında önbelleğe alınır, bu sayede API maliyetleri büyük ölçüde düşürülür ve performans artar.
-- **Güçlü Hata Yönetimi & Toplu İşlem (Batch Processing)**: Sunucusuz mimarinin zaman aşımı (timeout) limitlerini aşabilmek için e-posta gönderimlerini gruplar halinde (batch) işleyecek şekilde tasarlanmıştır.
-
-## 🛠️ Teknoloji Yığını
-
-- **Frontend**: HTML5, Vanilla JavaScript, CSS3 (Ağır framework'ler yok, saf performans)
-- **Backend**: Node.js, Express.js (Netlify için `serverless-http` ile sarmalanmıştır)
-- **Veritabanı**: Firebase Firestore (Kullanıcı profilleri, kelime listeleri ve e-posta logları için NoSQL)
-- **E-posta Dağıtımı**: SendGrid API
-- **Yapay Zeka Motoru**: Google Gemini API (`@google/generative-ai`)
-- **Barındırma & Zamanlama**: Netlify Functions (Serverless & Scheduled Functions)
-- **Versiyon Kontrolü**: Git & GitHub
-
-## 📂 Proje Yapısı
+## Architecture
 
 ```text
-├── netlify/               # Netlify konfigürasyonu ve Sunucusuz (Serverless) Fonksiyonlar
-│   └── functions/
-│       ├── api.js         # Backend API rotaları (Kayıt, Sınav Sonucu İşleme, Abonelik İptali)
-│       └── daily-email.js # Günlük e-posta gönderiminden sorumlu zamanlanmış (Cron) fonksiyon
-├── public/                # Frontend statik dosyaları
-│   ├── css/               # Stil dosyaları (style.css, test.css)
-│   ├── js/                # İstemci taraflı scriptler (app.js, test.js)
-│   ├── index.html         # Karşılama/Kayıt Sayfası
-│   └── test.html          # Adaptif Seviye Belirleme Sınavı Sayfası
-├── seeds/                 # Başlangıç kelime veritabanı için yükleme scriptleri (Seed data)
-├── package.json           # Bağımlılıklar (Dependencies) ve NPM komutları
-├── netlify.toml           # Netlify Derleme (Build) ve Yönlendirme Konfigürasyonu
-└── server.js              # Yerel (Local) Express geliştirme sunucusu
+app.js                         Shared Express app factory, CORS, security headers
+server.js                      Local server bootstrap and scheduler start
+routes/api.js                  All API endpoints
+config/firebase.js             Firebase Admin initialization
+services/authTokenService.js   Secure token generation and hashing
+services/userService.js        Register, login-link, dashboard auth, unsubscribe
+services/placementService.js   Backend placement scoring
+services/vocabularyService.js  Cursor vocabulary selection and Gemini caching
+services/quizService.js        Quiz attempts, backend scoring, idempotent submit
+services/emailJobService.js    Scheduled email checkpoint job
+services/emailService.js       Escaped SendGrid HTML templates
+utils/                         Validation, escaping, errors, date helpers
+netlify/functions/api.js       Wraps the shared app with serverless-http
+netlify/functions/daily-email.js Runs the shared email job on schedule
+public/                        Static frontend
+test/                          Node test suite
 ```
 
-## 🚀 Yerel Geliştirme (Local Development) Ortamı
-
-Projeyi kendi bilgisayarınızda çalıştırmak için bu adımları izleyin.
-
-### Gereksinimler
-
-- Node.js (v18 veya daha güncel bir sürüm önerilir)
-- Bir Firebase Projesi (Firestore etkinleştirilmiş şekilde)
-- Bir SendGrid Hesabı (Doğrulanmış bir gönderici kimliği ile birlikte)
-- Bir Google Gemini API Anahtarı (Key)
-
-### 1. Repoyu bilgisayarınıza klonlayın
-
-```bash
-git clone https://github.com/erenmente/daily-verb-flow.git
-cd daily-verb-flow
-```
-
-### 2. Bağımlılıkları yükleyin
+## Local Development
 
 ```bash
 npm install
-```
-
-### 3. Çevre Değişkenlerini (Environment Variables) Ayarlayın
-
-Ana dizinde bir `.env` dosyası oluşturun ve bilgilerinizi ekleyin:
-
-```env
-# Firebase Kurulumu
-FIREBASE_PROJECT_ID=kendi_proje_id_niz
-FIREBASE_CLIENT_EMAIL=kendi_client_email_adresiniz
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nKendi_Gizli_Anahtariniz\n-----END PRIVATE KEY-----\n"
-
-# SendGrid Kurulumu
-SENDGRID_API_KEY=SG.kendi_api_anahtariniz
-SENDGRID_FROM_EMAIL=dogrulanmis_mailiniz@domain.com
-SENDGRID_FROM_NAME=Daily Verb Flow
-
-# Google Gemini Kurulumu
-GEMINI_API_KEY=kendi_gemini_api_anahtariniz
-
-# Yerel Sunucu Ayarları
-PORT=3000
-BASE_URL=http://localhost:3000
-```
-
-### 4. Veritabanına Başlangıç Verilerini Yükleyin (Seed)
-
-A1'den C1'e kadar olan ilk fiil havuzunu Firestore'a aktarmak için şunu çalıştırın:
-
-```bash
+cp .env.example .env
 npm run seed-all
-```
-
-### 5. Geliştirme Sunucusunu Başlatın
-
-```bash
 npm start
 ```
 
-Uygulama artık `http://localhost:3000` adresinde yayında olacaktır.
+The app runs at `http://localhost:3000`. Local `/api/*` endpoints and Netlify production `/api/*` endpoints use the same route code.
 
-## ☁️ Yayına Alma (Deploy - Netlify)
+## Environment Variables
 
-Bu proje, Netlify üzerinde hiçbir ek konfigürasyon (zero-config) gerektirmeden çalışmak üzere optimize edilmiştir.
+```env
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_CLIENT_EMAIL=your-client-email@your-project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY\n-----END PRIVATE KEY-----\n"
 
-1. GitHub deponuzu Netlify'a bağlayın.
-2. Netlify, `netlify.toml` dosyasındaki ayarları otomatik olarak tanıyacaktır.
-3. `.env` dosyanızdaki tüm çevre değişkenlerini **Netlify Environment Variables** (Site Ayarları > Ortam Değişkenleri) sayfasına ekleyin.
-4. **Deploy** butonuna tıklayın.
+SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxx
+SENDGRID_FROM_EMAIL=dailyverbflow@yourdomain.com
+SENDGRID_FROM_NAME=Daily Verb Flow
 
-Zamanlanmış fonksiyon (`daily-email.js`), Netlify'ın "Scheduled Functions" özelliğini kullanır ve `netlify.toml` dosyasındaki `0 "5" * * *` kuralına (05:00 UTC / 08:00 TRT) göre her sabah otomatik olarak tetiklenir.
+GEMINI_API_KEY=AIzaXXXXXXXXXXXXXXXXXXXXX
 
-## 📝 Lisans
+PORT=3000
+BASE_URL=http://localhost:3000
+APP_ORIGIN=http://localhost:3000
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+EMAIL_JOB_BATCH_SIZE=5
+```
 
-Bu proje Eren Mente tarafından geliştirilmiştir.
+`BASE_URL` is used when generating dashboard, quiz, login, and unsubscribe links. `APP_ORIGIN` and `ALLOWED_ORIGINS` control API CORS; production should list only the deployed site origins.
 
----
-*Canlı Demo: [https://daily-verb-flow.netlify.app/](https://verb.erenmente.com/)*
+## Auth And Tokens
+
+Registration creates two cryptographically secure random tokens:
+
+- `dashboardAccessToken`: used for dashboard, placement-test submit, and quiz access.
+- `unsubscribeToken`: used only for `/api/unsubscribe/:token`.
+
+Only SHA-256 hashes are stored in Firestore. Login no longer returns `userId` or tokens in the JSON response; it sends a fresh dashboard link to the registered email address. Daily emails also rotate dashboard/unsubscribe tokens and include tokenized links.
+
+## API
+
+- `POST /api/register`
+- `POST /api/submit-test`
+- `GET /api/unsubscribe/:token`
+- `POST /api/login`
+- `GET /api/dashboard/:userId?token=...`
+- `GET /api/quiz/:userId?token=...`
+- `POST /api/submit-quiz`
+- `POST /api/send-daily`
+
+Validation errors use a consistent JSON shape:
+
+```json
+{ "success": false, "error": { "code": "bad_request", "message": "..." } }
+```
+
+## Scheduled Email Job
+
+Local cron runs daily at 08:00 `Europe/Istanbul`. Netlify runs `netlify/functions/daily-email.js` at `0 5 * * *` UTC, which is 08:00 Turkey time.
+
+The email job uses Firestore checkpoints in `email_jobs/{YYYY-MM-DD}` and user-level `lastEmailSentDate` to avoid duplicate same-day sends. Per-user results are written to `email_job_logs`. Vocabulary selection uses `lastVocabularyDocId` cursor state instead of Firestore `offset()`. If stock is low and `GEMINI_API_KEY` is configured, Gemini output is schema-validated and cached in `vocabulary`; invalid output is discarded.
+
+Firestore needs the composite index defined in `firestore.indexes.json` for daily vocabulary selection:
+
+```text
+vocabulary: level ASC, createdAt ASC, __name__ ASC
+```
+
+If `/api/send-daily` returns `FAILED_PRECONDITION: The query requires an index`, open the Firebase Console link returned in the error response and create the suggested index. It can take a few minutes to become ready.
+
+## Quiz And Placement
+
+Placement scoring is calculated on the backend from submitted answers with CEFR weights, so clients cannot self-assign a high level by sending only a score. Weekly quiz attempts are stored in `quizAttempts/{userId}_{weekKey}`. Re-submitting a completed attempt returns the stored result and does not increment memorized-word totals again.
+
+## Quality Commands
+
+```bash
+npm test
+npm run lint
+npm run format:check
+npm run check
+node --check server.js
+node --check netlify/functions/api.js
+node --check netlify/functions/daily-email.js
+```
+
+## Security Notes
+
+Dynamic HTML in email templates is escaped. Dashboard and quiz links are created with DOM APIs and `URLSearchParams`. Production CORS should not use `*`; use `APP_ORIGIN` and `ALLOWED_ORIGINS`. Netlify headers include CSP, HSTS, frame protection, content-type protection, referrer policy, and permissions policy. Abuse protection can be extended with a persistent rate limiter for `/api/register` and `/api/login`.

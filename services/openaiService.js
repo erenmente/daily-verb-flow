@@ -1,17 +1,17 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 let model = null;
 
 if (process.env.GEMINI_API_KEY) {
-    try {
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-        console.log('✅ Google Gemini bağlantısı kuruldu.');
-    } catch (e) {
-        console.warn('⚠️  Gemini başlatılamadı:', e.message);
-    }
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    console.log("✅ Google Gemini bağlantısı kuruldu.");
+  } catch (e) {
+    console.warn("⚠️  Gemini başlatılamadı:", e.message);
+  }
 } else {
-    console.warn('⚠️  Gemini API key eksik — dinamik kelime üretimi devre dışı.');
+  console.warn("⚠️  Gemini API key eksik — dinamik kelime üretimi devre dışı.");
 }
 
 /**
@@ -21,12 +21,12 @@ if (process.env.GEMINI_API_KEY) {
  * @returns {Array} Üretilen fiil verileri
  */
 async function generateVerbs(level, count = 10) {
-    if (!model) {
-        console.warn('⚠️  Gemini yapılandırılmamış — fiil üretilemiyor.');
-        return [];
-    }
+  if (!model) {
+    console.warn("⚠️  Gemini yapılandırılmamış — fiil üretilemiyor.");
+    return [];
+  }
 
-    const prompt = `Sen Türk öğrencilere İngilizce öğreten uzman bir dil öğretmenisin.
+  const prompt = `Sen Türk öğrencilere İngilizce öğreten uzman bir dil öğretmenisin.
 
 ${level} seviyesine uygun ${count} adet İngilizce düzensiz (irregular) fiil üret.
 
@@ -59,20 +59,20 @@ SADECE geçerli JSON döndür, başka hiçbir şey yazma:
 - Türkçe çeviriler doğru ve akıcı olsun
 - Daha önce yaygın olarak bilinen fiilleri (go, come, eat gibi) TEKRARLAMA, daha az bilinen fiiller seç`;
 
-    try {
-        const result = await model.generateContent(prompt);
-        const content = result.response.text().trim();
+  try {
+    const result = await model.generateContent(prompt);
+    const content = result.response.text().trim();
 
-        // JSON bloğunu parse et (```json ... ``` sarmalı olabilir)
-        const jsonMatch = content.match(/\[[\s\S]*\]/);
-        if (jsonMatch) {
-            return JSON.parse(jsonMatch[0]);
-        }
-        return JSON.parse(content);
-    } catch (error) {
-        console.error('Gemini verb generation error:', error.message);
-        return [];
+    // JSON bloğunu parse et (```json ... ``` sarmalı olabilir)
+    const jsonMatch = content.match(/\[[\s\S]*\]/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]);
     }
+    return JSON.parse(content);
+  } catch (error) {
+    console.error("Gemini verb generation error:", error.message);
+    return [];
+  }
 }
 
 module.exports = { generateVerbs };

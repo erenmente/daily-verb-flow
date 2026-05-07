@@ -2,36 +2,29 @@
 # =====================
 
 [build]
-  publish = "public"          # Static dosyalar
-  functions = "netlify/functions"  # Serverless Functions
+  publish = "public"
+  functions = "netlify/functions"
 
-# Environment variables (Netlify Dashboard'dan da eklenebilir)
 [build.environment]
   NODE_VERSION = "18"
 
-# API Redirects — /api/* isteklerini Netlify Function'a yönlendir
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
 
-# SPA — test sayfası için
 [[redirects]]
   from = "/test"
   to = "/test.html"
   status = 200
 
-# Headers — CORS ve güvenlik
+# API CORS is handled by the shared Express app.
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-
-[[headers]]
-  for = "/api/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'"

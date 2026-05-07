@@ -1,146 +1,246 @@
-const sgMail = require('@sendgrid/mail');
+const sgMail = require("@sendgrid/mail");
+const { escapeHtml, escapeAttribute } = require("../utils/escapeHtml");
 
-if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_API_KEY.startsWith('SG.')) {
+if (
+  process.env.SENDGRID_API_KEY &&
+  process.env.SENDGRID_API_KEY.startsWith("SG.")
+) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 } else {
-  console.warn('⚠️  SendGrid API key eksik veya geçersiz — e-posta gönderimi devre dışı.');
+  console.warn(
+    "SendGrid API key eksik veya gecersiz; e-posta gonderimi devre disi.",
+  );
 }
 
-/**
- * Günlük fiil e-postası gönderir
- * @param {string} toEmail - Alıcı e-posta
- * @param {string} userName - Kullanıcı adı
- * @param {Array} verbs - Gönderilecek fiil listesi
- * @param {string} userId - Kullanıcı ID (unsubscribe için)
- */
-async function sendDailyEmail(toEmail, userName, verbs, userId) {
-  const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
-  const unsubscribeUrl = `${baseUrl}/api/unsubscribe/${userId}`;
+function getBaseUrl() {
+  return (
+    process.env.BASE_URL ||
+    process.env.URL ||
+    "http://localhost:3000"
+  ).replace(/\/$/, "");
+}
+
+function buildDailyEmailHtml({
+  userName,
+  verbs,
+  userId,
+  accessToken,
+  unsubscribeToken,
+  date = new Date(),
+}) {
+  const baseUrl = getBaseUrl();
+  const unsubscribeUrl = `${baseUrl}/api/unsubscribe/${encodeURIComponent(unsubscribeToken)}`;
+  const dashboardUrl = `${baseUrl}/dashboard.html?u=${encodeURIComponent(userId)}&token=${encodeURIComponent(
+    accessToken,
+  )}`;
+  const isSunday = date.getDay() === 0;
 
   const verbRows = verbs
-    .map(
-      (verb, i) => `
-      <tr style="border-bottom: 1px solid #e2e8f0;">
-        <td colspan="3" style="padding: 0;">
-          <!-- Verb Header -->
-          <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #667eea22, #764ba222); border-radius: 12px; margin: 12px 0;">
-            <tr>
-              <td style="padding: 20px 24px;">
-                <div style="font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Fiil #${i + 1}</div>
-                <div style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">
-                  ${verb.v1} &nbsp;→&nbsp; ${verb.v2} &nbsp;→&nbsp; ${verb.v3}
-                </div>
-                <div style="font-size: 15px; color: #6366f1; font-weight: 600;">
-                  🇹🇷 ${verb.meaning}
-                </div>
-              </td>
-            </tr>
-            <!-- Example Sentences -->
-            ${verb.exampleSentences
-          .map(
-            (s, si) => `
-              <tr>
-                <td style="padding: 4px 24px ${si === verb.exampleSentences.length - 1 ? '20px' : '4px'} 24px;">
-                  <div style="background: white; border-radius: 8px; padding: 12px 16px; margin-bottom: 4px; border-left: 3px solid ${si === 0 ? '#6366f1' : si === 1 ? '#8b5cf6' : '#a78bfa'};">
-                    <div style="font-size: 14px; color: #1e293b; margin-bottom: 4px;">🇬🇧 ${s.en}</div>
-                    <div style="font-size: 13px; color: #64748b;">🇹🇷 ${s.tr}</div>
-                  </div>
-                </td>
-              </tr>
-            `
-          )
-          .join('')}
-          </table>
-        </td>
-      </tr>
-    `
-    )
-    .join('');
+    .map((verb, index) => {
+      const examples = Array.isArray(verb.exampleSentences)
+        ? verb.exampleSentences
+        : [];
+      const reviewBadge = verb.isReview
+        ? '<span style="background:#fef08a;color:#854d0e;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:bold;margin-left:6px;">TEKRAR</span>'
+        : "";
 
-  const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f1f5f9; padding: 32px 16px;">
+      return `
     <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
-          
-          <!-- Header -->
+      <td style="padding:0;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin:12px 0;">
           <tr>
-            <td style="background: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa); padding: 40px 32px; text-align: center;">
-              <div style="font-size: 36px; margin-bottom: 8px;">📚</div>
-              <h1 style="color: white; font-size: 26px; margin: 0 0 8px 0; font-weight: 700;">Daily Verb Flow</h1>
-              <p style="color: rgba(255,255,255,0.85); font-size: 15px; margin: 0;">Günlük Fiil Akışın Hazır!</p>
+            <td style="padding:20px 24px;">
+              <div style="font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Fiil #${
+                index + 1
+              } ${reviewBadge}</div>
+              <div style="font-size:22px;font-weight:700;color:#1e293b;margin-bottom:4px;">${escapeHtml(
+                verb.v1,
+              )} &rarr; ${escapeHtml(verb.v2)} &rarr; ${escapeHtml(verb.v3)}</div>
+              <div style="font-size:15px;color:#6366f1;font-weight:600;">${escapeHtml(verb.meaning)}</div>
             </td>
           </tr>
-
-          <!-- Greeting -->
+          ${examples
+            .map(
+              (sentence, sentenceIndex) => `
           <tr>
-            <td style="padding: 32px 32px 8px 32px;">
-              <p style="font-size: 16px; color: #334155; margin: 0;">
-                Merhaba <strong>${userName}</strong> 👋
-              </p>
-              <p style="font-size: 14px; color: #64748b; margin: 8px 0 0 0;">
-                İşte bugünkü 10 fiilin! Her birini V1-V2-V3 halleriyle ve örnek cümlelerle öğren.
-              </p>
+            <td style="padding:4px 24px ${
+              sentenceIndex === examples.length - 1 ? "20px" : "4px"
+            } 24px;">
+              <div style="background:#fff;border-radius:8px;padding:12px 16px;border-left:3px solid ${
+                sentenceIndex === 0
+                  ? "#6366f1"
+                  : sentenceIndex === 1
+                    ? "#8b5cf6"
+                    : "#a78bfa"
+              };">
+                <div style="font-size:14px;color:#1e293b;margin-bottom:4px;">${escapeHtml(sentence.en)}</div>
+                <div style="font-size:13px;color:#64748b;">${escapeHtml(sentence.tr)}</div>
+              </div>
             </td>
-          </tr>
-
-          <!-- Verbs -->
-          <tr>
-            <td style="padding: 8px 24px 24px 24px;">
-              <table width="100%" cellpadding="0" cellspacing="0">
-                ${verbRows}
-              </table>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding: 24px 32px; background: #f8fafc; text-align: center; border-top: 1px solid #e2e8f0;">
-              <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">
-                Bu e-postayı Daily Verb Flow aboneliğiniz kapsamında aldınız.
-              </p>
-              <a href="${unsubscribeUrl}" style="display: inline-block; padding: 10px 24px; background: #fee2e2; color: #dc2626; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600;">
-                ❌ Abonelikten Çık
-              </a>
-            </td>
-          </tr>
-
+          </tr>`,
+            )
+            .join("")}
         </table>
       </td>
-    </tr>
-  </table>
-</body>
-</html>
-  `;
+    </tr>`;
+    })
+    .join("");
 
-  const msg = {
-    to: toEmail,
-    from: {
-      email: process.env.SENDGRID_FROM_EMAIL || 'noreply@dailyverbflow.com',
-      name: process.env.SENDGRID_FROM_NAME || 'Daily Verb Flow',
-    },
-    subject: `📚 Günlük Fiillerin Hazır, ${userName}!`,
-    html: htmlContent,
-  };
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:32px 16px;"><tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);">
+<tr><td style="background:#4f46e5;padding:40px 32px;text-align:center;">
+  <h1 style="color:#fff;font-size:26px;margin:0 0 8px;font-weight:700;">Daily Verb Flow</h1>
+  <p style="color:rgba(255,255,255,.85);font-size:15px;margin:0;">Gunluk fiil akisin hazir.</p>
+</td></tr>
+<tr><td style="padding:32px 32px 8px;">
+  <p style="font-size:16px;color:#334155;margin:0;">Merhaba <strong>${escapeHtml(userName)}</strong></p>
+  <p style="font-size:14px;color:#64748b;margin:8px 0 0;">Bugunku ${verbs.length} fiilin burada.</p>
+</td></tr>
+<tr><td style="padding:8px 24px 24px;"><table width="100%" cellpadding="0" cellspacing="0">${verbRows}</table></td></tr>
+<tr><td style="padding:16px 32px;text-align:center;">
+  ${
+    isSunday
+      ? `<a href="${escapeAttribute(dashboardUrl)}" style="display:inline-block;padding:14px 28px;background:#10b981;color:#fff;border-radius:8px;text-decoration:none;font-size:16px;font-weight:bold;">Haftalik sinaviniz hazir</a>`
+      : `<a href="${escapeAttribute(dashboardUrl)}" style="display:inline-block;padding:12px 24px;background:#e2e8f0;color:#475569;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">Gelisim panelini goruntule</a>`
+  }
+</td></tr>
+<tr><td style="padding:24px 32px;background:#f8fafc;text-align:center;border-top:1px solid #e2e8f0;">
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 16px;">Bu e-postayi Daily Verb Flow aboneliginiz kapsaminda aldiniz.</p>
+  <a href="${escapeAttribute(unsubscribeUrl)}" style="display:inline-block;padding:10px 24px;background:#fee2e2;color:#dc2626;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">Abonelikten cik</a>
+</td></tr>
+</table></td></tr></table></body></html>`;
+}
+
+function buildDailyEmailText({
+  userName,
+  verbs,
+  userId,
+  accessToken,
+  unsubscribeToken,
+}) {
+  const baseUrl = getBaseUrl();
+  const dashboardUrl = `${baseUrl}/dashboard.html?u=${encodeURIComponent(userId)}&token=${encodeURIComponent(
+    accessToken,
+  )}`;
+  const unsubscribeUrl = `${baseUrl}/api/unsubscribe/${encodeURIComponent(unsubscribeToken)}`;
+  const lines = [
+    `Merhaba ${userName},`,
+    "",
+    "Bugunku Daily Verb Flow fiilleriniz:",
+    "",
+    ...verbs.flatMap((verb, index) => [
+      `${index + 1}. ${verb.v1} -> ${verb.v2} -> ${verb.v3}: ${verb.meaning}`,
+      ...(Array.isArray(verb.exampleSentences)
+        ? verb.exampleSentences.map(
+            (sentence) => `- ${sentence.en} / ${sentence.tr}`,
+          )
+        : []),
+      "",
+    ]),
+    `Gelisim paneli: ${dashboardUrl}`,
+    `Abonelikten cik: ${unsubscribeUrl}`,
+  ];
+
+  return lines.join("\n");
+}
+
+function buildLoginEmailHtml({ userName, userId, accessToken }) {
+  const dashboardUrl = `${getBaseUrl()}/dashboard.html?u=${encodeURIComponent(userId)}&token=${encodeURIComponent(
+    accessToken,
+  )}`;
+
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:Arial,sans-serif;background:#f8fafc;padding:24px;">
+    <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:28px;">
+        <tr><td>
+          <h1 style="font-size:22px;color:#1e293b;margin:0 0 12px;">Daily Verb Flow panel girisi</h1>
+          <p style="font-size:15px;color:#475569;">Merhaba ${escapeHtml(
+            userName,
+          )}, panelinize guvenli baglanti ile girmek icin asagidaki dugmeyi kullanin.</p>
+          <p><a href="${escapeAttribute(
+            dashboardUrl,
+          )}" style="display:inline-block;background:#4f46e5;color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">Panele gir</a></p>
+          <p style="font-size:12px;color:#94a3b8;">Bu baglanti yeni bir giris istegiyle yenilenir. E-postayi siz istemediyseniz yok sayabilirsiniz.</p>
+        </td></tr>
+      </table>
+    </td></tr></table>
+  </body></html>`;
+}
+
+async function sendMail(message) {
+  if (
+    !process.env.SENDGRID_API_KEY ||
+    !process.env.SENDGRID_API_KEY.startsWith("SG.")
+  ) {
+    console.warn(
+      `E-posta gonderilmedi; SendGrid yapilandirilmamis: ${message.to}`,
+    );
+    return false;
+  }
 
   try {
-    await sgMail.send(msg);
-    console.log(`✅ Email sent to ${toEmail}`);
+    await sgMail.send(message);
     return true;
   } catch (error) {
-    console.error(`❌ Email send error for ${toEmail}:`, error.message);
-    if (error.response) {
-      console.error(error.response.body);
-    }
+    console.error(`Email send error for ${message.to}:`, error.message);
     return false;
   }
 }
 
-module.exports = { sendDailyEmail };
+async function sendDailyEmail({
+  toEmail,
+  userName,
+  verbs,
+  userId,
+  accessToken,
+  unsubscribeToken,
+}) {
+  const unsubscribeUrl = `${getBaseUrl()}/api/unsubscribe/${encodeURIComponent(unsubscribeToken)}`;
+  return sendMail({
+    to: toEmail,
+    from: {
+      email: process.env.SENDGRID_FROM_EMAIL || "noreply@dailyverbflow.com",
+      name: process.env.SENDGRID_FROM_NAME || "Daily Verb Flow",
+    },
+    subject: `Gunluk fiillerin hazir, ${userName}!`,
+    html: buildDailyEmailHtml({
+      userName,
+      verbs,
+      userId,
+      accessToken,
+      unsubscribeToken,
+    }),
+    text: buildDailyEmailText({
+      userName,
+      verbs,
+      userId,
+      accessToken,
+      unsubscribeToken,
+    }),
+    headers: {
+      "List-Unsubscribe": `<${unsubscribeUrl}>`,
+    },
+  });
+}
+
+async function sendLoginEmail(toEmail, userName, userId, accessToken) {
+  return sendMail({
+    to: toEmail,
+    from: {
+      email: process.env.SENDGRID_FROM_EMAIL || "noreply@dailyverbflow.com",
+      name: process.env.SENDGRID_FROM_NAME || "Daily Verb Flow",
+    },
+    subject: "Daily Verb Flow panel giris baglantiniz",
+    html: buildLoginEmailHtml({ userName, userId, accessToken }),
+  });
+}
+
+module.exports = {
+  buildDailyEmailHtml,
+  buildDailyEmailText,
+  buildLoginEmailHtml,
+  sendDailyEmail,
+  sendLoginEmail,
+};
