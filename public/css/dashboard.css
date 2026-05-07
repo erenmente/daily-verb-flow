@@ -45,7 +45,7 @@
   border-radius: 6px;
   display: inline-block;
   position: relative;
-  background: linear-gradient(135deg, var(--flow-orange) 0 48%, var(--flow-blue) 48% 78%, var(--flow-white) 78%);
+  background: linear-gradient(135deg, var(--flow-blue) 0 66%, var(--flow-dark) 66%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
@@ -84,7 +84,7 @@
 
 .user-info span {
     font-weight: 600;
-    color: var(--primary);
+    color: #bfdbfe;
 }
 
 /* Login Section */
@@ -134,9 +134,9 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--primary-500);
+  border-color: var(--flow-blue);
   background: rgba(15, 23, 42, 0.85);
-  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.12);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.14);
 }
 
 #loginBtn {
@@ -162,14 +162,14 @@
 
 .stat-icon {
   font-size: 30px;
-  background: rgba(var(--primary-rgb), 0.08);
+  background: rgba(var(--accent-rgb), 0.1);
   width: 58px;
   height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  border: 1px solid rgba(var(--primary-rgb), 0.18);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
 }
 
 .stat-content h3 {
@@ -188,7 +188,7 @@
 }
 
 .level-badge {
-    color: var(--primary);
+    color: #bfdbfe;
 }
 
 /* Promo / Quiz / Queue Section */
@@ -199,8 +199,8 @@
 }
 
 .quiz-promo {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.78), rgba(var(--accent-rgb), 0.18));
-  border-left: 4px solid var(--primary-500);
+  background: rgba(15, 23, 42, 0.72);
+  border-left: 4px solid var(--flow-blue);
   padding: 30px;
 }
 

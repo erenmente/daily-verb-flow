@@ -32,7 +32,13 @@ Daily Verb Flow uses the "Daily Flow" palette:
 - Clean surfaces/text: `#FAFAFA`
 - Dark structure: `#2D3436`
 
-The orange tone is used for primary calls to action and morning-energy cues. The blue tone balances it in links, selected states, email-oriented surfaces, and supporting gradients.
+The orange tone is reserved for primary calls to action. The blue tone supports links, selected states, and email-oriented trust cues without competing with the content.
+
+UI usage rules:
+
+- Backgrounds stay neutral so vocabulary content remains the strongest visual element.
+- Orange is reserved for direct actions such as subscribing, saving an email address, starting a test, or entering the panel from an email.
+- Email templates keep a dark-gray/light-gray contrast system for readability, with only action buttons using the accent color.
 
 ## Local Development
 

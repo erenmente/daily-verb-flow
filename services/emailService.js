@@ -56,7 +56,7 @@ function buildDailyEmailHtml({
               <div style="font-size:22px;font-weight:700;color:#1e293b;margin-bottom:4px;">${escapeHtml(
                 verb.v1,
               )} &rarr; ${escapeHtml(verb.v2)} &rarr; ${escapeHtml(verb.v3)}</div>
-              <div style="font-size:15px;color:#6366f1;font-weight:600;">${escapeHtml(verb.meaning)}</div>
+              <div style="font-size:15px;color:#2d3436;font-weight:600;">${escapeHtml(verb.meaning)}</div>
             </td>
           </tr>
           ${examples
@@ -66,13 +66,7 @@ function buildDailyEmailHtml({
             <td style="padding:4px 24px ${
               sentenceIndex === examples.length - 1 ? "20px" : "4px"
             } 24px;">
-              <div style="background:#fff;border-radius:8px;padding:12px 16px;border-left:3px solid ${
-                sentenceIndex === 0
-                  ? "#6366f1"
-                  : sentenceIndex === 1
-                    ? "#8b5cf6"
-                    : "#a78bfa"
-              };">
+              <div style="background:#fff;border-radius:8px;padding:12px 16px;border-left:3px solid #cbd5e1;">
                 <div style="font-size:14px;color:#1e293b;margin-bottom:4px;">${escapeHtml(sentence.en)}</div>
                 <div style="font-size:13px;color:#64748b;">${escapeHtml(sentence.tr)}</div>
               </div>
@@ -87,12 +81,12 @@ function buildDailyEmailHtml({
     .join("");
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#f1f5f9;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:32px 16px;"><tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);">
-<tr><td style="background:#4f46e5;padding:40px 32px;text-align:center;">
-  <h1 style="color:#fff;font-size:26px;margin:0 0 8px;font-weight:700;">Daily Verb Flow</h1>
-  <p style="color:rgba(255,255,255,.85);font-size:15px;margin:0;">Gunluk fiil akisin hazir.</p>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;"><tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+<tr><td style="background:#fff;padding:34px 32px;text-align:center;border-bottom:1px solid #e5e7eb;">
+  <h1 style="color:#111827;font-size:26px;margin:0 0 8px;font-weight:700;">Daily Verb Flow</h1>
+  <p style="color:#4b5563;font-size:15px;margin:0;">Gunluk fiil akisin hazir.</p>
 </td></tr>
 <tr><td style="padding:32px 32px 8px;">
   <p style="font-size:16px;color:#334155;margin:0;">Merhaba <strong>${escapeHtml(userName)}</strong></p>
@@ -102,13 +96,13 @@ function buildDailyEmailHtml({
 <tr><td style="padding:16px 32px;text-align:center;">
   ${
     isSunday
-      ? `<a href="${escapeAttribute(dashboardUrl)}" style="display:inline-block;padding:14px 28px;background:#10b981;color:#fff;border-radius:8px;text-decoration:none;font-size:16px;font-weight:bold;">Haftalik sinaviniz hazir</a>`
-      : `<a href="${escapeAttribute(dashboardUrl)}" style="display:inline-block;padding:12px 24px;background:#e2e8f0;color:#475569;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">Gelisim panelini goruntule</a>`
+      ? `<a href="${escapeAttribute(dashboardUrl)}" style="display:inline-block;padding:14px 28px;background:#f6820d;color:#fff;border-radius:8px;text-decoration:none;font-size:16px;font-weight:bold;">Haftalik sinaviniz hazir</a>`
+      : `<a href="${escapeAttribute(dashboardUrl)}" style="display:inline-block;padding:12px 24px;background:#f6820d;color:#fff;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Gelisim panelini goruntule</a>`
   }
 </td></tr>
 <tr><td style="padding:24px 32px;background:#f8fafc;text-align:center;border-top:1px solid #e2e8f0;">
   <p style="font-size:13px;color:#94a3b8;margin:0 0 16px;">Bu e-postayi Daily Verb Flow aboneliginiz kapsaminda aldiniz.</p>
-  <a href="${escapeAttribute(unsubscribeUrl)}" style="display:inline-block;padding:10px 24px;background:#fee2e2;color:#dc2626;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">Abonelikten cik</a>
+  <a href="${escapeAttribute(unsubscribeUrl)}" style="display:inline-block;padding:10px 24px;background:#fff;color:#991b1b;border:1px solid #fecaca;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">Abonelikten cik</a>
 </td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -161,7 +155,7 @@ function buildLoginEmailHtml({ userName, userId, accessToken }) {
           )}, panelinize guvenli baglanti ile girmek icin asagidaki dugmeyi kullanin.</p>
           <p><a href="${escapeAttribute(
             dashboardUrl,
-          )}" style="display:inline-block;background:#4f46e5;color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">Panele gir</a></p>
+          )}" style="display:inline-block;background:#f6820d;color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">Panele gir</a></p>
           <p style="font-size:12px;color:#94a3b8;">Bu baglanti yeni bir giris istegiyle yenilenir. E-postayi siz istemediyseniz yok sayabilirsiniz.</p>
         </td></tr>
       </table>

@@ -28,7 +28,7 @@
 }
 
 .back-link:hover {
-    color: var(--primary);
+    color: #bfdbfe;
 }
 
 .progress-container {
@@ -52,7 +52,7 @@
 
 .progress-fill {
   height: 100%;
-  background: var(--gradient-primary);
+  background: var(--flow-blue);
   border-radius: 10px;
   transition: width 0.3s ease;
 }
@@ -88,7 +88,7 @@
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--primary);
+    color: #bfdbfe;
     font-weight: 600;
     display: block;
     margin-bottom: 12px;
@@ -131,10 +131,10 @@
 }
 
 .option-btn:hover:not(:disabled) {
-  background: rgba(var(--primary-rgb), 0.08);
-  border-color: rgba(var(--primary-rgb), 0.38);
+  background: rgba(var(--accent-rgb), 0.08);
+  border-color: rgba(var(--accent-rgb), 0.38);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.12);
+  box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.12);
 }
 
 .option-btn:disabled {
@@ -143,9 +143,9 @@
 }
 
 .option-btn.correct {
-  background: rgba(var(--primary-rgb), 0.13);
-  border-color: var(--primary-500);
-  color: var(--primary-100);
+  background: rgba(16, 185, 129, 0.13);
+  border-color: var(--success);
+  color: #bbf7d0;
 }
 
 .option-btn.wrong {
@@ -175,7 +175,7 @@
 .score-display {
     font-size: 48px;
     font-weight: 700;
-    color: var(--primary);
+    color: #bfdbfe;
     margin: 20px 0 10px;
 }
 
