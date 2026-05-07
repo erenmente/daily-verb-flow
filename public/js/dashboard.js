@@ -36,9 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(
-          data.error?.message || data.error || "Giriş başarısız.",
-        );
+        throw new Error(getApiMessage(data) || "Giriş başarısız.");
       }
 
       errorDiv.textContent =
@@ -97,6 +95,14 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Dashboard load error", error);
       alert("Bilgileriniz yüklenirken bir hata oluştu.");
     }
+  }
+
+  function getApiMessage(data) {
+    if (!data) return null;
+    if (typeof data.error === "string") return data.error;
+    if (data.error?.message) return data.error.message;
+    if (data.message) return data.message;
+    return null;
   }
 
   function renderQuizStatus(uid, token, wordsSentThisWeekCount) {

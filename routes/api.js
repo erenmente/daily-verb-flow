@@ -75,11 +75,13 @@ router.post(
   "/login",
   asyncHandler(async (req, res) => {
     const input = validateLoginBody(req.body);
-    await requestLoginLink(input);
+    const result = await requestLoginLink(input);
     res.json({
       success: true,
       message:
-        "Guvenli giris baglantisi kayitli e-posta adresinize gonderildi.",
+        result.sent === false
+          ? "Giris baglantiniz hazirlandi ancak e-posta servisi su anda yanit vermedi. Lutfen biraz sonra tekrar deneyin."
+          : "Guvenli giris baglantisi kayitli e-posta adresinize gonderildi.",
     });
   }),
 );

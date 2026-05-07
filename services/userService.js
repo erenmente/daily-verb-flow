@@ -95,8 +95,8 @@ async function requestLoginLink({ email }) {
     await userDoc.ref.update(update);
   }
 
-  await sendLoginEmail(email, user.name, userDoc.id, accessToken);
-  return { sent: true };
+  const sent = await sendLoginEmail(email, user.name, userDoc.id, accessToken);
+  return { sent };
 }
 
 async function getAuthorizedUser(userId, token) {
