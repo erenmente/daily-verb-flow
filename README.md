@@ -23,6 +23,17 @@ public/                        Static frontend
 test/                          Node test suite
 ```
 
+## UI Palette
+
+Daily Verb Flow uses the "Daily Flow" palette:
+
+- Action and habit energy: `#F6820D`
+- Email and trust support: `#0052CC`
+- Clean surfaces/text: `#FAFAFA`
+- Dark structure: `#2D3436`
+
+The orange tone is used for primary calls to action and morning-energy cues. The blue tone balances it in links, selected states, email-oriented surfaces, and supporting gradients.
+
 ## Local Development
 
 ```bash

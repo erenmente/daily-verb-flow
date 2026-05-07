@@ -3,20 +3,32 @@
    =================================== */
 
 :root {
+  /* Daily Flow palette */
+  --flow-orange: #f6820d;
+  --flow-orange-600: #d96f0b;
+  --flow-orange-700: #ad5707;
+  --flow-blue: #0052cc;
+  --flow-blue-600: #0043a6;
+  --flow-blue-700: #003580;
+  --flow-white: #fafafa;
+  --flow-dark: #2d3436;
+  --primary-rgb: 246, 130, 13;
+  --accent-rgb: 0, 82, 204;
+
   /* Primary palette */
-  --primary-50: #eef2ff;
-  --primary-100: #e0e7ff;
-  --primary-200: #c7d2fe;
-  --primary-300: #a5b4fc;
-  --primary-400: #818cf8;
-  --primary-500: #2563eb;
-  --primary-600: #1d4ed8;
-  --primary-700: #1e40af;
+  --primary-50: #fff7ed;
+  --primary-100: #ffedd5;
+  --primary-200: #fed7aa;
+  --primary-300: #fdba74;
+  --primary-400: #fb923c;
+  --primary-500: var(--flow-orange);
+  --primary-600: var(--flow-orange-600);
+  --primary-700: var(--flow-orange-700);
 
   /* Accent */
-  --accent-400: #2dd4bf;
-  --accent-500: #14b8a6;
-  --accent-600: #0f766e;
+  --accent-400: #3385ff;
+  --accent-500: var(--flow-blue);
+  --accent-600: var(--flow-blue-600);
 
   /* Neutrals */
   --gray-50: #f8fafc;
@@ -27,20 +39,20 @@
   --gray-500: #64748b;
   --gray-600: #475569;
   --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  --gray-800: var(--flow-dark);
+  --gray-900: #171f21;
 
   /* Semantic */
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
-  --text: #f8fafc;
+  --text: var(--flow-white);
   --text-muted: #94a3b8;
   --primary: var(--primary-500);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #2563eb, #14b8a6);
-  --gradient-dark: linear-gradient(135deg, #0f172a, #164e63);
+  --gradient-primary: linear-gradient(135deg, var(--flow-orange), var(--flow-blue));
+  --gradient-dark: linear-gradient(135deg, #171f21, var(--flow-dark));
   --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
 
   /* Shadows */
@@ -48,7 +60,7 @@
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
-  --shadow-glow: 0 0 36px rgba(20, 184, 166, 0.18);
+  --shadow-glow: 0 0 36px rgba(var(--primary-rgb), 0.18);
 
   /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -85,7 +97,7 @@ body {
   background:
     linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px),
-    radial-gradient(circle at top right, rgba(20, 184, 166, 0.13), transparent 34rem),
+    radial-gradient(circle at top right, rgba(var(--accent-rgb), 0.16), transparent 34rem),
     var(--gray-900);
   background-size:
     44px 44px,
@@ -120,8 +132,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(120deg, transparent 0%, rgba(37, 99, 235, 0.08) 45%, transparent 70%),
-    linear-gradient(30deg, transparent 0%, rgba(245, 158, 11, 0.06) 48%, transparent 72%);
+    linear-gradient(120deg, transparent 0%, rgba(var(--accent-rgb), 0.1) 45%, transparent 70%),
+    linear-gradient(30deg, transparent 0%, rgba(var(--primary-rgb), 0.09) 48%, transparent 72%);
   animation: float 24s ease-in-out infinite;
 }
 
@@ -242,15 +254,15 @@ body {
 }
 
 .btn-nav--primary {
-  color: var(--primary-300);
-  background: rgba(99, 102, 241, 0.1);
-  border-color: rgba(99, 102, 241, 0.2);
+  color: var(--primary-200);
+  background: rgba(var(--primary-rgb), 0.1);
+  border-color: rgba(var(--primary-rgb), 0.22);
 }
 
 .btn-nav--primary:hover {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(var(--primary-rgb), 0.18);
   color: var(--primary-200);
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(var(--primary-rgb), 0.34);
 }
 
 /* ===================================
@@ -271,8 +283,8 @@ body {
   align-items: center;
   gap: 8px;
   padding: 6px 16px 6px 8px;
-  background: rgba(99, 102, 241, 0.12);
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  background: rgba(var(--primary-rgb), 0.12);
+  border: 1px solid rgba(var(--primary-rgb), 0.25);
   border-radius: 100px;
   font-size: 13px;
   font-weight: 500;
@@ -373,8 +385,8 @@ body {
 }
 
 .feature:hover {
-  background: rgba(20, 184, 166, 0.08);
-  border-color: rgba(20, 184, 166, 0.25);
+  background: rgba(var(--primary-rgb), 0.08);
+  border-color: rgba(var(--primary-rgb), 0.25);
   transform: translateY(-2px);
 }
 
@@ -407,7 +419,7 @@ body {
 }
 
 .card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(var(--primary-rgb), 0.3);
 }
 
 @keyframes fadeInUp {
@@ -485,8 +497,8 @@ body {
 
 .form__input:focus {
   border-color: var(--primary-400);
-  background: rgba(99, 102, 241, 0.06);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: rgba(var(--primary-rgb), 0.06);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
 }
 
 .form__btn {
@@ -520,7 +532,7 @@ body {
 
 .form__btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.34);
 }
 
 .form__btn:hover::before {
@@ -641,19 +653,19 @@ body {
 }
 
 .avatar--1 {
-  background: #6366f1;
+  background: var(--flow-orange);
 }
 
 .avatar--2 {
-  background: #8b5cf6;
+  background: var(--flow-blue);
 }
 
 .avatar--3 {
-  background: #a78bfa;
+  background: var(--flow-orange-600);
 }
 
 .avatar--4 {
-  background: #c4b5fd;
+  background: var(--flow-blue-600);
 }
 
 /* Utility */
@@ -705,8 +717,8 @@ body {
 }
 
 .step:hover {
-  background: rgba(20, 184, 166, 0.05);
-  border-color: rgba(20, 184, 166, 0.2);
+  background: rgba(var(--primary-rgb), 0.05);
+  border-color: rgba(var(--primary-rgb), 0.2);
   transform: translateY(-4px);
 }
 
@@ -716,7 +728,7 @@ body {
   right: 16px;
   width: 28px;
   height: 28px;
-  background: rgba(99, 102, 241, 0.15);
+  background: rgba(var(--primary-rgb), 0.15);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -855,7 +867,7 @@ body {
 .btn:hover,
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.24);
+  box-shadow: 0 10px 24px rgba(var(--primary-rgb), 0.24);
 }
 
 .btn:disabled,

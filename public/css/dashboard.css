@@ -45,7 +45,7 @@
   border-radius: 6px;
   display: inline-block;
   position: relative;
-  background: linear-gradient(135deg, #22c55e 0 45%, #2563eb 45% 72%, #14b8a6 72%);
+  background: linear-gradient(135deg, var(--flow-orange) 0 48%, var(--flow-blue) 48% 78%, var(--flow-white) 78%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
@@ -134,9 +134,9 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--accent-500);
+  border-color: var(--primary-500);
   background: rgba(15, 23, 42, 0.85);
-  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.12);
 }
 
 #loginBtn {
@@ -162,14 +162,14 @@
 
 .stat-icon {
   font-size: 30px;
-  background: rgba(20, 184, 166, 0.08);
+  background: rgba(var(--primary-rgb), 0.08);
   width: 58px;
   height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  border: 1px solid rgba(20, 184, 166, 0.18);
+  border: 1px solid rgba(var(--primary-rgb), 0.18);
 }
 
 .stat-content h3 {
@@ -199,8 +199,8 @@
 }
 
 .quiz-promo {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.78), rgba(19, 78, 74, 0.34));
-  border-left: 4px solid var(--accent-500);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.78), rgba(var(--accent-rgb), 0.18));
+  border-left: 4px solid var(--primary-500);
   padding: 30px;
 }
 

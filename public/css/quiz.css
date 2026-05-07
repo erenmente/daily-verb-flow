@@ -131,10 +131,10 @@
 }
 
 .option-btn:hover:not(:disabled) {
-  background: rgba(20, 184, 166, 0.08);
-  border-color: rgba(20, 184, 166, 0.38);
+  background: rgba(var(--primary-rgb), 0.08);
+  border-color: rgba(var(--primary-rgb), 0.38);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.12);
+  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.12);
 }
 
 .option-btn:disabled {
@@ -143,9 +143,9 @@
 }
 
 .option-btn.correct {
-  background: rgba(20, 184, 166, 0.13);
-  border-color: #14b8a6;
-  color: #ccfbf1;
+  background: rgba(var(--primary-rgb), 0.13);
+  border-color: var(--primary-500);
+  color: var(--primary-100);
 }
 
 .option-btn.wrong {
@@ -155,8 +155,8 @@
 }
 
 .option-btn.selected {
-  background: rgba(37, 99, 235, 0.13);
-  border-color: rgba(96, 165, 250, 0.5);
+  background: rgba(var(--accent-rgb), 0.13);
+  border-color: rgba(var(--accent-rgb), 0.5);
   color: #dbeafe;
 }
 
